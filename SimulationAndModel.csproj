@@ -77,4 +77,10 @@
 		<PackageReference Include="Syncfusion.Maui.Toolkit" Version="1.0.4" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Compile Update="Features\OneClass\OneClassPage.xaml.cs">
+	    <DependentUpon>OneClassPage.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
 </Project>

@@ -4,13 +4,13 @@
     xmlns:editors="clr-namespace:Syncfusion.Maui.Toolkit.NumericEntry;assembly=Syncfusion.Maui.Toolkit"
     xmlns:effectsView="clr-namespace:Syncfusion.Maui.Toolkit.EffectsView;assembly=Syncfusion.Maui.Toolkit"
     xmlns:inputLayout="clr-namespace:Syncfusion.Maui.Toolkit.TextInputLayout;assembly=Syncfusion.Maui.Toolkit"
-    xmlns:local="clr-namespace:SimulationAndModel.Features.BasicExample"
+    xmlns:local="clr-namespace:SimulationAndModel.Features.OneClassPage"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="SimulationAndModel.Features.BasicExample.BasicExamplePage"
-    x:DataType="local:BasicExampleViewModel"
+    x:Class="SimulationAndModel.Features.OneClassPage.OneClassPage"
+    x:DataType="local:OneClassViewModel"
     BackgroundColor="White"
-    Title="BasicExamplePage">
+    Title="OneClassPage">
     <ScrollView>
         <Grid
             Padding="50, 0">
@@ -80,6 +80,8 @@
                 </Border>
 
             </FlexLayout>
+            <CollectionView>
+            </CollectionView>
         </Grid>
     </ScrollView>
 </ContentPage>
