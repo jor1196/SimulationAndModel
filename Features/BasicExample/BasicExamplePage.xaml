@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:behaviors="clr-namespace:SimulationAndModel.Features.BasicExample.Behaviors"
+    xmlns:editors="clr-namespace:Syncfusion.Maui.Toolkit.NumericEntry;assembly=Syncfusion.Maui.Toolkit"
+    xmlns:effectsView="clr-namespace:Syncfusion.Maui.Toolkit.EffectsView;assembly=Syncfusion.Maui.Toolkit"
     xmlns:inputLayout="clr-namespace:Syncfusion.Maui.Toolkit.TextInputLayout;assembly=Syncfusion.Maui.Toolkit"
     xmlns:local="clr-namespace:SimulationAndModel.Features.BasicExample"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
@@ -11,13 +12,18 @@
     BackgroundColor="White"
     Title="BasicExamplePage">
     <ScrollView>
-        <VerticalStackLayout>
+        <Grid
+            Padding="50, 0">
             <FlexLayout
+                VerticalOptions="Start"
+                HorizontalOptions="Fill"
                 Wrap="Wrap">
                 <inputLayout:SfTextInputLayout
-                    Hint="Hora de Inicio">
+                    Hint="Hora de Inicio"
+                    Margin="5,0"
+                    HeightRequest="100"
+                    MaximumWidthRequest="200">
                     <TimePicker
-                        x:Name="InitialTime"
                         TextColor="Black">
                         <TimePicker.Behaviors>
                         </TimePicker.Behaviors>
@@ -25,38 +31,55 @@
                 </inputLayout:SfTextInputLayout>
                 <inputLayout:SfTextInputLayout
                     Hint="Tiempo de Llegada del Cliente"
-                    HelperText="Ingreselo en segundos">
-                    <Entry 
-                        Keyboard="Numeric">
-                        <Entry.Behaviors>
-                            <toolkit:NumericValidationBehavior
-                                MinimumValue="1" 
-                                MaximumValue="60" />
-                        </Entry.Behaviors>
-                    </Entry>
+                    HelperText="Ingreselo en segundos"
+                    Margin="5,0"
+                    HeightRequest="100"
+                    MaximumWidthRequest="200">
+                    <editors:SfNumericEntry
+                        AllowNull="True"
+                        Minimum="1"
+                        Maximum="60"
+                        CustomFormat="0"/>
                 </inputLayout:SfTextInputLayout>
                 <inputLayout:SfTextInputLayout
                     Hint="Tiempo de Fin de Servicio"
-                    HelperText="Ingreselo en segundos">
-                    <Entry Keyboard="Numeric">
-                        <Entry.Behaviors>
-                            <toolkit:NumericValidationBehavior
-                                MinimumValue="1" 
-                                MaximumValue="60" />
-                        </Entry.Behaviors>
-                    </Entry>                
+                    HelperText="Ingreselo en segundos"
+                    Margin="5,0"
+                    HeightRequest="100"
+                    MaximumWidthRequest="200">
+                    <editors:SfNumericEntry
+                        AllowNull="True"
+                        Minimum="1"
+                        Maximum="60"
+                        CustomFormat="0"/>
                 </inputLayout:SfTextInputLayout>
                 <inputLayout:SfTextInputLayout
-                    Hint="Hora Final">
+                    Hint="Hora Final"
+                    Margin="5,0"
+                    HeightRequest="100"
+                    MaximumWidthRequest="200">
                     <TimePicker
                         TextColor="Black">
                     </TimePicker>
-                    <inputLayout:SfTextInputLayout.Behaviors>
-                        <behaviors:IsMinorTimeThan
-                            GreaterTime="{x:Reference InitialTime, x:DataType=TimePicker}"/>
-                    </inputLayout:SfTextInputLayout.Behaviors>
                 </inputLayout:SfTextInputLayout>
+                <Border
+                    Margin="5,0"
+                    HeightRequest="70"
+                    WidthRequest="100"
+                    BackgroundColor="Purple">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="5,5,5,5" />
+                    </Border.StrokeShape>
+                    <effectsView:SfEffectsView RippleBackground="Yellow">
+                        <Label
+                            VerticalOptions="Center"
+                            HorizontalOptions="Center"
+                            Text="Calcular"
+                            TextColor="White"/>
+                    </effectsView:SfEffectsView>
+                </Border>
+
             </FlexLayout>
-        </VerticalStackLayout>
+        </Grid>
     </ScrollView>
 </ContentPage>
