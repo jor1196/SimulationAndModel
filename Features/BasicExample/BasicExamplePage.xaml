@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:behaviors="clr-namespace:SimulationAndModel.Features.BasicExample.Behaviors"
+    xmlns:inputLayout="clr-namespace:Syncfusion.Maui.Toolkit.TextInputLayout;assembly=Syncfusion.Maui.Toolkit"
+    xmlns:local="clr-namespace:SimulationAndModel.Features.BasicExample"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="SimulationAndModel.Features.BasicExample.BasicExamplePage"
+    x:DataType="local:BasicExampleViewModel"
+    BackgroundColor="White"
+    Title="BasicExamplePage">
+    <ScrollView>
+        <VerticalStackLayout>
+            <FlexLayout
+                Wrap="Wrap">
+                <inputLayout:SfTextInputLayout
+                    Hint="Hora de Inicio">
+                    <TimePicker
+                        x:Name="InitialTime"
+                        TextColor="Black">
+                        <TimePicker.Behaviors>
+                        </TimePicker.Behaviors>
+                    </TimePicker>
+                </inputLayout:SfTextInputLayout>
+                <inputLayout:SfTextInputLayout
+                    Hint="Tiempo de Llegada del Cliente"
+                    HelperText="Ingreselo en segundos">
+                    <Entry 
+                        Keyboard="Numeric">
+                        <Entry.Behaviors>
+                            <toolkit:NumericValidationBehavior
+                                MinimumValue="1" 
+                                MaximumValue="60" />
+                        </Entry.Behaviors>
+                    </Entry>
+                </inputLayout:SfTextInputLayout>
+                <inputLayout:SfTextInputLayout
+                    Hint="Tiempo de Fin de Servicio"
+                    HelperText="Ingreselo en segundos">
+                    <Entry Keyboard="Numeric">
+                        <Entry.Behaviors>
+                            <toolkit:NumericValidationBehavior
+                                MinimumValue="1" 
+                                MaximumValue="60" />
+                        </Entry.Behaviors>
+                    </Entry>                
+                </inputLayout:SfTextInputLayout>
+                <inputLayout:SfTextInputLayout
+                    Hint="Hora Final">
+                    <TimePicker
+                        TextColor="Black">
+                    </TimePicker>
+                    <inputLayout:SfTextInputLayout.Behaviors>
+                        <behaviors:IsMinorTimeThan
+                            GreaterTime="{x:Reference InitialTime, x:DataType=TimePicker}"/>
+                    </inputLayout:SfTextInputLayout.Behaviors>
+                </inputLayout:SfTextInputLayout>
+            </FlexLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
