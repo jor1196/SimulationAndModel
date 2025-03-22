@@ -20,7 +20,7 @@
                 Wrap="Wrap">
                 <inputLayout:SfTextInputLayout
                     Hint="Hora de Inicio"
-                    Margin="5,0"
+                    Margin="5"
                     HeightRequest="100"
                     MaximumWidthRequest="200">
                     <TimePicker
@@ -32,7 +32,7 @@
                 <inputLayout:SfTextInputLayout
                     Hint="Tiempo de Llegada del Cliente"
                     HelperText="Ingreselo en segundos"
-                    Margin="5,0"
+                    Margin="5"
                     HeightRequest="100"
                     MaximumWidthRequest="200">
                     <editors:SfNumericEntry
@@ -44,7 +44,7 @@
                 <inputLayout:SfTextInputLayout
                     Hint="Tiempo de Fin de Servicio"
                     HelperText="Ingreselo en segundos"
-                    Margin="5,0"
+                    Margin="5"
                     HeightRequest="100"
                     MaximumWidthRequest="200">
                     <editors:SfNumericEntry
@@ -55,7 +55,7 @@
                 </inputLayout:SfTextInputLayout>
                 <inputLayout:SfTextInputLayout
                     Hint="Hora Final"
-                    Margin="5,0"
+                    Margin="5"
                     HeightRequest="100"
                     MaximumWidthRequest="200">
                     <TimePicker
@@ -63,7 +63,7 @@
                     </TimePicker>
                 </inputLayout:SfTextInputLayout>
                 <Border
-                    Margin="5,0"
+                    Margin="5"
                     HeightRequest="70"
                     WidthRequest="100"
                     BackgroundColor="Purple">
