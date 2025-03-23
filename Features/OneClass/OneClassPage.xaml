@@ -10,16 +10,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="SimulationAndModel.Features.OneClass.OneClassPage"
     x:DataType="local:OneClassViewModel"
-    BackgroundColor="White"
-    Title="OneClassPage">
+    BackgroundColor="White">
     <ScrollView>
         <Grid
             Padding="50, 0"
             RowDefinitions="*, *">
             <FlexLayout
                 Grid.Row="0"
-                VerticalOptions="Start"
-                HorizontalOptions="Fill"
+                HorizontalOptions="Center"
                 Wrap="Wrap">
                 <inputLayout:SfTextInputLayout
                     Hint="Hora de Inicio"
@@ -92,147 +90,152 @@
                     </effectsView:SfEffectsView>
                 </Border>
             </FlexLayout>
-            <CollectionView
+            <ScrollView
                 Grid.Row="1"
-                HorizontalOptions="Fill"
-                ItemsSource="{Binding OneClassRecords}">
-                <CollectionView.Header>
-                    <Grid
-                        ColumnSpacing="-1"
-                        RowDefinitions="60"
-                        ColumnDefinitions="*,*,*,*,*,*">
-                        <Border
-                            Grid.Column="0"
-                            VerticalOptions="Fill"
-                            HorizontalOptions="Fill"
-                            Stroke="Black">
-                            <Label
+                VerticalOptions="Start"
+                HorizontalOptions="Center"
+                Orientation="Horizontal">
+                <CollectionView
+                    HorizontalOptions="Fill"
+                    ItemsSource="{Binding OneClassRecords}">
+                    <CollectionView.HeaderTemplate>
+                        <DataTemplate>
+                            <Grid
+                            ColumnSpacing="-1"
+                            RowDefinitions="60"
+                        ColumnDefinitions="120,120,120,120,120,120">
+                                <Border
+                                Grid.Column="0"
+                                VerticalOptions="Fill"
+                                
+                                Stroke="Black">
+                                    <Label
                                 VerticalOptions="Center"
                                 HorizontalOptions="Center"
                                 Text="Hora Actual"/>
-                        </Border>
-                        <Border
+                                </Border>
+                                <Border
                             Grid.Column="1"
                             VerticalOptions="Fill"
-                            HorizontalOptions="Fill"
                             Stroke="Black">
-                            <Label
+                                    <Label
                                 VerticalOptions="Center"
                                 HorizontalOptions="Center"
                                 Text="Hora prox. llegada de cliente"/>
-                        </Border>
-                        <Border
+                                </Border>
+                                <Border
                             Grid.Column="2"
                             VerticalOptions="Fill"
-                            HorizontalOptions="Fill"
                             Stroke="Black">
-                            <Label
+                                    <Label
                                 VerticalOptions="Center"
                                 HorizontalOptions="Center"
                                 Text="Hora Prox. Fin de Servicio"/>
-                        </Border>
-                        <Border
+                                </Border>
+                                <Border
                             Grid.Column="3"
                             VerticalOptions="Fill"
                             HorizontalOptions="Fill"
                             Stroke="Black">
-                            <Label
+                                    <Label
                                 VerticalOptions="Center"
                                 HorizontalOptions="Center"
                                 Text="Clientes en cola"/>
-                        </Border>
-                        <Border
+                                </Border>
+                                <Border
                             Grid.Column="4"
                             VerticalOptions="Fill"
-                            HorizontalOptions="Fill"
                             Stroke="Black">
-                            <Label
+                                    <Label
                                 VerticalOptions="Center"
                                 HorizontalOptions="Center"
                                 Text="Estado del Puesto de Servicio"/>
-                        </Border>
-                        <Border
+                                </Border>
+                                <Border
                             Grid.Column="5"
                             VerticalOptions="Fill"
-                            HorizontalOptions="Fill"
                             Stroke="Black">
-                            <Label
+                                    <Label
                                 VerticalOptions="Center"
                                 HorizontalOptions="Center"
                                 Text="Clientes atendidos"/>
-                        </Border>
-                    </Grid>
-                </CollectionView.Header>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="models:OneClassRecord">
-                        <Grid
+                                </Border>
+                            </Grid>
+
+                        </DataTemplate>
+                    </CollectionView.HeaderTemplate>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:OneClassRecord">
+                            <Grid
                         ColumnSpacing="-1"
                         RowDefinitions="60"
-                        ColumnDefinitions="*,*,*,*,*,*">
-                            <Border
+                        ColumnDefinitions="120,120,120,120,120,120">
+                                <Border
                             Grid.Column="0"
                             VerticalOptions="Fill"
                             HorizontalOptions="Fill"
                             Stroke="Black">
-                                <Label
+                                    <Label
                                 VerticalOptions="Center"
                                 HorizontalOptions="Center"
                                 Text="{Binding CurrentTime, Mode=OneWay}"/>
-                            </Border>
-                            <Border
+                                </Border>
+                                <Border
                             Grid.Column="1"
                             VerticalOptions="Fill"
                             HorizontalOptions="Fill"
                             Stroke="Black">
-                                <Label
+                                    <Label
                                 VerticalOptions="Center"
                                 HorizontalOptions="Center"
                                 Text="{Binding CustomerNextArrivalTime, Mode=OneWay}"/>
-                            </Border>
-                            <Border
+                                </Border>
+                                <Border
                             Grid.Column="2"
                             VerticalOptions="Fill"
                             HorizontalOptions="Fill"
                             Stroke="Black">
-                                <Label
+                                    <Label
                                 VerticalOptions="Center"
                                 HorizontalOptions="Center"
                                 Text="{Binding NextEndServiceTime, Mode=OneWay}"/>
-                            </Border>
-                            <Border
+                                </Border>
+                                <Border
                             Grid.Column="3"
                             VerticalOptions="Fill"
                             HorizontalOptions="Fill"
                             Stroke="Black">
-                                <Label
+                                    <Label
                                 VerticalOptions="Center"
                                 HorizontalOptions="Center"
                                 Text="{Binding CustomerQueueCount}"/>
-                            </Border>
-                            <Border
+                                </Border>
+                                <Border
                             Grid.Column="4"
                             VerticalOptions="Fill"
                             HorizontalOptions="Fill"
                             Stroke="Black">
-                                <Label
+                                    <Label
                                 VerticalOptions="Center"
                                 HorizontalOptions="Center"
                                 Text="{Binding ServiceStationState}"/>
-                            </Border>
-                            <Border
+                                </Border>
+                                <Border
                             Grid.Column="5"
                             VerticalOptions="Fill"
                             HorizontalOptions="Fill"
                             Stroke="Black">
-                                <Label
+                                    <Label
                                 VerticalOptions="Center"
                                 HorizontalOptions="Center"
                                 Text="{Binding CustomerServedCount}"/>
-                            </Border>
-                        </Grid>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </ScrollView>
         </Grid>
     </ScrollView>
 </ContentPage>

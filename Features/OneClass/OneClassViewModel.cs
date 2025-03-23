@@ -2,6 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SimulationAndModel.Features.OneClass.Models;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace SimulationAndModel.Features.OneClass;
 
@@ -20,7 +21,7 @@ public partial class OneClassViewModel : ObservableObject
     };
 
     [RelayCommand]
-    private void Calculate()
+    private async Task Calculate()
     {
         OneClassRecords = [];
 
@@ -72,6 +73,8 @@ public partial class OneClassViewModel : ObservableObject
             }
 
             OneClassRecords.Add(record);
+            await Task.Yield();
         }
+
     }
 }
