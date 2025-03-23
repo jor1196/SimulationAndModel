@@ -1,4 +1,4 @@
-namespace SimulationAndModel.Features.OneClassPage;
+namespace SimulationAndModel.Features.OneClass;
 
 public partial class OneClassPage : ContentPage
 {

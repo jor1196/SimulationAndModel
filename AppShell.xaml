@@ -2,15 +2,14 @@
 <Shell
     x:Class="SimulationAndModel.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:basicExample="clr-namespace:SimulationAndModel.Features.BasicExample"
+    xmlns:oneClass="clr-namespace:SimulationAndModel.Features.OneClass"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    
     Title="SimulationAndModel">
 
     <ShellContent
-        Title="Basic Example"
-        Route="BasicExamplePage"
-        ContentTemplate="{x:DataTemplate basicExample:BasicExamplePage}">
+        Title="One Class"
+        Route="OneClassPage"
+        ContentTemplate="{x:DataTemplate oneClass:OneClassPage}">
     </ShellContent>
 
 </Shell>

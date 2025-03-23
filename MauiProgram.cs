@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
-using SimulationAndModel.Features.OneClassPage;
+using SimulationAndModel.Features.OneClass;
 using Syncfusion.Maui.Toolkit.Hosting;
 
 namespace SimulationAndModel;
