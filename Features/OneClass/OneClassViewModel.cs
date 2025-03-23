@@ -59,19 +59,12 @@ public partial class OneClassViewModel : ObservableObject
             else
             {
                 record.CurrentTime = record.NextEndServiceTime;
+                record.ServiceStationState = false;
 
-                if (!record.ServiceStationState)
+                if (record.CustomerQueueCount > 0)
                 {
-                    if (record.CustomerQueueCount > 0)
-                    {
-                        record.CustomerQueueCount--;
-                    }
-
+                    record.CustomerQueueCount--;
                     record.ServiceStationState = true;
-                }
-                else
-                {
-                    record.CustomerQueueCount++;
                 }
 
                 record.CustomerServedCount++;
