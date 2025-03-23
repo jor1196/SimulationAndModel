@@ -14,228 +14,247 @@
     <ScrollView>
         <Grid
             Padding="50, 0"
-            RowDefinitions="*, *">
-            <FlexLayout
+            RowDefinitions="*, 20, *">
+            <Border
                 Grid.Row="0"
-                HorizontalOptions="Center"
-                Wrap="Wrap">
-                <inputLayout:SfTextInputLayout
-                    Hint="Hora de Inicio"
-                    Margin="5"
-                    HeightRequest="100"
-                    MaximumWidthRequest="200">
-                    <TimePicker
-                        TextColor="Black"
-                        Time="{Binding Filter.InitialTime}">
-                        <TimePicker.Behaviors>
-                        </TimePicker.Behaviors>
-                    </TimePicker>
-                </inputLayout:SfTextInputLayout>
-                <inputLayout:SfTextInputLayout
-                    Hint="Tiempo de Llegada del Cliente"
-                    HelperText="Ingreselo en segundos"
-                    Margin="5"
-                    HeightRequest="100"
-                    MaximumWidthRequest="200">
-                    <editors:SfNumericEntry
-                        AllowNull="True"
-                        Minimum="1"
-                        Maximum="60"
-                        CustomFormat="0"
-                        Value="{Binding Filter.CustomerArrivalTime}"/>
-                </inputLayout:SfTextInputLayout>
-                <inputLayout:SfTextInputLayout
-                    Hint="Tiempo de Fin de Servicio"
-                    HelperText="Ingreselo en segundos"
-                    Margin="5"
-                    HeightRequest="100"
-                    MaximumWidthRequest="200">
-                    <editors:SfNumericEntry
-                        AllowNull="True"
-                        Minimum="1"
-                        Maximum="60"
-                        CustomFormat="0"
-                        Value="{Binding Filter.EndServiceTime}"/>
-                </inputLayout:SfTextInputLayout>
-                <inputLayout:SfTextInputLayout
-                    Hint="Hora Final"
-                    Margin="5"
-                    HeightRequest="100"
-                    MaximumWidthRequest="200">
-                    <TimePicker
-                        TextColor="Black"
-                        Time="{Binding Filter.EndTime}">
-                    </TimePicker>
-                </inputLayout:SfTextInputLayout>
-                <Border
-                    x:Name="Calculate"
-                    Margin="5"
-                    HeightRequest="70"
-                    WidthRequest="100">
-                    <Border.GestureRecognizers>
-                        <TapGestureRecognizer
-                            Command="{Binding CalculateCommand}"/>
-                    </Border.GestureRecognizers>
-                    <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="5,5,5,5" />
-                    </Border.StrokeShape>
-                    <effectsView:SfEffectsView 
-                        RippleBackground="Yellow" 
-                        BackgroundColor="Purple">
-                        <Label
-                            VerticalOptions="Center"
-                            HorizontalOptions="Center"
-                            Text="Calcular"
-                            TextColor="White"/>
-                    </effectsView:SfEffectsView>
-                </Border>
-            </FlexLayout>
-            <ScrollView
-                Grid.Row="1"
                 VerticalOptions="Start"
                 HorizontalOptions="Center"
-                Orientation="Horizontal">
-                <CollectionView
-                    HorizontalOptions="Fill"
-                    ItemsSource="{Binding OneClassRecords}">
-                    <CollectionView.HeaderTemplate>
-                        <DataTemplate>
-                            <Grid
-                            ColumnSpacing="-1"
-                            RowDefinitions="60"
-                        ColumnDefinitions="120,120,120,120,120,120">
-                                <Border
-                                Grid.Column="0"
-                                VerticalOptions="Fill"
-                                
-                                Stroke="Black">
-                                    <Label
+                Padding="50,20"
+                Stroke="Gray"
+                StrokeThickness="0.1"
+                BackgroundColor="#F2F2F2">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="5,5,5,5" />
+                </Border.StrokeShape>
+                <FlexLayout
+                    Wrap="Wrap">
+                    <inputLayout:SfTextInputLayout
+                        Hint="Hora de Inicio"
+                        Margin="5"
+                        HeightRequest="100"
+                        MaximumWidthRequest="200">
+                        <TimePicker
+                            TextColor="Black"
+                            Time="{Binding Filter.InitialTime}">
+                            <TimePicker.Behaviors>
+                            </TimePicker.Behaviors>
+                        </TimePicker>
+                    </inputLayout:SfTextInputLayout>
+                    <inputLayout:SfTextInputLayout
+                        Hint="Tiempo de Llegada del Cliente"
+                        HelperText="Ingreselo en segundos"
+                        Margin="5"
+                        HeightRequest="100"
+                        MaximumWidthRequest="200">
+                        <editors:SfNumericEntry
+                            AllowNull="True"
+                            Minimum="1"
+                            Maximum="60"
+                            CustomFormat="0"
+                            Value="{Binding Filter.CustomerArrivalTime}"/>
+                    </inputLayout:SfTextInputLayout>
+                    <inputLayout:SfTextInputLayout
+                        Hint="Tiempo de Fin de Servicio"
+                        HelperText="Ingreselo en segundos"
+                        Margin="5"
+                        HeightRequest="100"
+                        MaximumWidthRequest="200">
+                        <editors:SfNumericEntry
+                            AllowNull="True"
+                            Minimum="1"
+                            Maximum="60"
+                            CustomFormat="0"
+                            Value="{Binding Filter.EndServiceTime}"/>
+                    </inputLayout:SfTextInputLayout>
+                    <inputLayout:SfTextInputLayout
+                        Hint="Hora Final"
+                        Margin="5"
+                        HeightRequest="100"
+                        MaximumWidthRequest="200">
+                        <TimePicker
+                            TextColor="Black"
+                            Time="{Binding Filter.EndTime}">
+                        </TimePicker>
+                    </inputLayout:SfTextInputLayout>
+                    <Border
+                        Margin="5"
+                        HeightRequest="80"
+                        WidthRequest="80">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer
+                                Command="{Binding CalculateCommand}"/>
+                        </Border.GestureRecognizers>
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="40,40,40,40" />
+                        </Border.StrokeShape>
+                        <effectsView:SfEffectsView 
+                            RippleBackground="Yellow" 
+                            BackgroundColor="Purple">
+                            <Label
                                 VerticalOptions="Center"
                                 HorizontalOptions="Center"
-                                Text="Hora Actual"/>
-                                </Border>
-                                <Border
-                            Grid.Column="1"
-                            VerticalOptions="Fill"
-                            Stroke="Black">
-                                    <Label
-                                VerticalOptions="Center"
-                                HorizontalOptions="Center"
-                                Text="Hora prox. llegada de cliente"/>
-                                </Border>
-                                <Border
-                            Grid.Column="2"
-                            VerticalOptions="Fill"
-                            Stroke="Black">
-                                    <Label
-                                VerticalOptions="Center"
-                                HorizontalOptions="Center"
-                                Text="Hora Prox. Fin de Servicio"/>
-                                </Border>
-                                <Border
-                            Grid.Column="3"
-                            VerticalOptions="Fill"
-                            HorizontalOptions="Fill"
-                            Stroke="Black">
-                                    <Label
-                                VerticalOptions="Center"
-                                HorizontalOptions="Center"
-                                Text="Clientes en cola"/>
-                                </Border>
-                                <Border
-                            Grid.Column="4"
-                            VerticalOptions="Fill"
-                            Stroke="Black">
-                                    <Label
-                                VerticalOptions="Center"
-                                HorizontalOptions="Center"
-                                Text="Estado del Puesto de Servicio"/>
-                                </Border>
-                                <Border
-                            Grid.Column="5"
-                            VerticalOptions="Fill"
-                            Stroke="Black">
-                                    <Label
-                                VerticalOptions="Center"
-                                HorizontalOptions="Center"
-                                Text="Clientes atendidos"/>
-                                </Border>
-                            </Grid>
+                                Text="Calcular"
+                                TextColor="White"/>
+                        </effectsView:SfEffectsView>
+                    </Border>
+                </FlexLayout>
+            </Border>
+            <BoxView 
+                Grid.Row="1"
+                BackgroundColor="Transparent"/>
+            <Border
+                Grid.Row="2"
+                VerticalOptions="Start"
+                HorizontalOptions="Center"
+                Padding="50,20"
+                Stroke="Gray"
+                StrokeThickness="0.1"
+                BackgroundColor="#F2F2F2">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="5,5,5,5" />
+                </Border.StrokeShape>
+                <ScrollView
+                    Orientation="Horizontal">
 
-                        </DataTemplate>
-                    </CollectionView.HeaderTemplate>
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="models:OneClassRecord">
-                            <Grid
-                        ColumnSpacing="-1"
-                        RowDefinitions="60"
-                        ColumnDefinitions="120,120,120,120,120,120">
-                                <Border
-                            Grid.Column="0"
-                            VerticalOptions="Fill"
-                            HorizontalOptions="Fill"
-                            Stroke="Black">
-                                    <Label
-                                VerticalOptions="Center"
-                                HorizontalOptions="Center"
-                                Text="{Binding CurrentTime, Mode=OneWay}"/>
-                                </Border>
-                                <Border
-                            Grid.Column="1"
-                            VerticalOptions="Fill"
-                            HorizontalOptions="Fill"
-                            Stroke="Black">
-                                    <Label
-                                VerticalOptions="Center"
-                                HorizontalOptions="Center"
-                                Text="{Binding CustomerNextArrivalTime, Mode=OneWay}"/>
-                                </Border>
-                                <Border
-                            Grid.Column="2"
-                            VerticalOptions="Fill"
-                            HorizontalOptions="Fill"
-                            Stroke="Black">
-                                    <Label
-                                VerticalOptions="Center"
-                                HorizontalOptions="Center"
-                                Text="{Binding NextEndServiceTime, Mode=OneWay}"/>
-                                </Border>
-                                <Border
-                            Grid.Column="3"
-                            VerticalOptions="Fill"
-                            HorizontalOptions="Fill"
-                            Stroke="Black">
-                                    <Label
-                                VerticalOptions="Center"
-                                HorizontalOptions="Center"
-                                Text="{Binding CustomerQueueCount}"/>
-                                </Border>
-                                <Border
-                            Grid.Column="4"
-                            VerticalOptions="Fill"
-                            HorizontalOptions="Fill"
-                            Stroke="Black">
-                                    <Label
-                                VerticalOptions="Center"
-                                HorizontalOptions="Center"
-                                Text="{Binding ServiceStationState}"/>
-                                </Border>
-                                <Border
-                            Grid.Column="5"
-                            VerticalOptions="Fill"
-                            HorizontalOptions="Fill"
-                            Stroke="Black">
-                                    <Label
-                                VerticalOptions="Center"
-                                HorizontalOptions="Center"
-                                Text="{Binding CustomerServedCount}"/>
-                                </Border>
-                            </Grid>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-
-            </ScrollView>
+                    <CollectionView
+                        HorizontalOptions="Fill"
+                        ItemsSource="{Binding OneClassRecords}">
+                        <CollectionView.HeaderTemplate>
+                            <DataTemplate>
+                                <Grid
+                                    ColumnSpacing="-1"
+                                    RowDefinitions="60"
+                                    ColumnDefinitions="120,120,120,120,120,120">
+                                    <Border
+                                        Grid.Column="0"
+                                        VerticalOptions="Fill"    
+                                        Stroke="Black">
+                                        <Label
+                                            VerticalOptions="Center"
+                                            HorizontalOptions="Center"
+                                            Text="Hora Actual"/>
+                                    </Border>
+                                    <Border
+                                        Grid.Column="1"
+                                        VerticalOptions="Fill"
+                                        Stroke="Black">
+                                        <Label
+                                            VerticalOptions="Center"
+                                            HorizontalOptions="Center"
+                                            Text="Hora prox. llegada de cliente"/>
+                                    </Border>
+                                    <Border
+                                        Grid.Column="2"
+                                        VerticalOptions="Fill"
+                                        Stroke="Black">
+                                        <Label
+                                            VerticalOptions="Center"
+                                            HorizontalOptions="Center"
+                                            Text="Hora Prox. Fin de Servicio"/>
+                                    </Border>
+                                    <Border
+                                        Grid.Column="3"
+                                        VerticalOptions="Fill"
+                                        HorizontalOptions="Fill"
+                                        Stroke="Black">
+                                        <Label
+                                            VerticalOptions="Center"
+                                            HorizontalOptions="Center"
+                                            Text="Clientes en cola"/>
+                                    </Border>
+                                    <Border
+                                        Grid.Column="4"
+                                        VerticalOptions="Fill"
+                                        Stroke="Black">
+                                        <Label
+                                            VerticalOptions="Center"
+                                            HorizontalOptions="Center"
+                                            Text="Estado del Puesto de Servicio"/>
+                                    </Border>
+                                    <Border
+                                        Grid.Column="5"
+                                        VerticalOptions="Fill"
+                                        Stroke="Black">
+                                        <Label
+                                            VerticalOptions="Center"
+                                            HorizontalOptions="Center"
+                                            Text="Clientes atendidos"/>
+                                    </Border>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.HeaderTemplate>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:OneClassRecord">
+                                <Grid
+                                    ColumnSpacing="-1"
+                                    RowDefinitions="60"
+                                    ColumnDefinitions="120,120,120,120,120,120">
+                                    <Border
+                                        Grid.Column="0"
+                                        VerticalOptions="Fill"
+                                        HorizontalOptions="Fill"
+                                        Stroke="Black">
+                                        <Label
+                                            VerticalOptions="Center"
+                                            HorizontalOptions="Center"
+                                            Text="{Binding CurrentTime, Mode=OneWay}"/>
+                                    </Border>
+                                    <Border
+                                        Grid.Column="1"
+                                        VerticalOptions="Fill"
+                                        HorizontalOptions="Fill"
+                                        Stroke="Black">
+                                        <Label
+                                            VerticalOptions="Center"
+                                            HorizontalOptions="Center"
+                                            Text="{Binding CustomerNextArrivalTime, Mode=OneWay}"/>
+                                    </Border>
+                                    <Border
+                                        Grid.Column="2"
+                                        VerticalOptions="Fill"
+                                        HorizontalOptions="Fill"
+                                        Stroke="Black">
+                                        <Label
+                                            VerticalOptions="Center"
+                                            HorizontalOptions="Center"
+                                            Text="{Binding NextEndServiceTime, Mode=OneWay}"/>
+                                    </Border>
+                                    <Border
+                                        Grid.Column="3"
+                                        VerticalOptions="Fill"
+                                        HorizontalOptions="Fill"
+                                        Stroke="Black">
+                                        <Label
+                                            VerticalOptions="Center"
+                                            HorizontalOptions="Center"
+                                            Text="{Binding CustomerQueueCount}"/>
+                                    </Border>
+                                    <Border
+                                        Grid.Column="4"
+                                        VerticalOptions="Fill"
+                                        HorizontalOptions="Fill"
+                                        Stroke="Black">
+                                        <Label
+                                            VerticalOptions="Center"
+                                            HorizontalOptions="Center"
+                                            Text="{Binding ServiceStationState}"/>
+                                    </Border>
+                                    <Border
+                                        Grid.Column="5"
+                                        VerticalOptions="Fill"
+                                        HorizontalOptions="Fill"
+                                        Stroke="Black">
+                                        <Label
+                                            VerticalOptions="Center"
+                                            HorizontalOptions="Center"
+                                            Text="{Binding CustomerServedCount}"/>
+                                    </Border>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </ScrollView>
+            </Border>
         </Grid>
     </ScrollView>
 </ContentPage>
