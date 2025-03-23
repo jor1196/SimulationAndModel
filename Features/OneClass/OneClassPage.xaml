@@ -76,27 +76,41 @@
                             Time="{Binding Filter.EndTime}">
                         </TimePicker>
                     </inputLayout:SfTextInputLayout>
-                    <Border
-                        Margin="5"
+                    <Button
+                        x:Name="CalculateButton"
+                        Margin="5,5,5,0"
                         HeightRequest="80"
-                        WidthRequest="80">
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer
-                                Command="{Binding CalculateCommand}"/>
-                        </Border.GestureRecognizers>
-                        <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="40,40,40,40" />
-                        </Border.StrokeShape>
-                        <effectsView:SfEffectsView 
-                            RippleBackground="Yellow" 
-                            BackgroundColor="Purple">
-                            <Label
-                                VerticalOptions="Center"
-                                HorizontalOptions="Center"
-                                Text="Calcular"
-                                TextColor="White"/>
-                        </effectsView:SfEffectsView>
-                    </Border>
+                        WidthRequest="80"
+                        CornerRadius="40"
+                        Text="Calcular"
+                        Command="{Binding CalculateCommand}">
+                        <Button.Behaviors>
+                            <toolkit:TouchBehavior 
+                                BindingContext="{Binding BindingContext,Source={x:Reference CalculateButton}, x:DataType=Button}"
+                                DefaultAnimationEasing="{x:Static Easing.CubicInOut}"
+                                DefaultAnimationDuration="750"
+                                HoveredBackgroundColor="BlueViolet"
+                                HoveredScale="1.1"/>
+                        </Button.Behaviors>
+                    </Button>
+                    <Button
+                        x:Name="ClearButton"
+                        Margin="5,5,5,0"
+                        HeightRequest="80"
+                        WidthRequest="80"
+                        CornerRadius="40"
+                        Text="Limpiar"
+                        BackgroundColor="Red"
+                        Command="{Binding ClearRecordsCommand}">
+                        <Button.Behaviors>
+                            <toolkit:TouchBehavior 
+                                BindingContext="{Binding BindingContext,Source={x:Reference ClearButton}, x:DataType=Button}"
+                                DefaultAnimationEasing="{x:Static Easing.CubicInOut}"
+                                DefaultAnimationDuration="750"
+                                HoveredBackgroundColor="LightGreen"
+                                HoveredScale="1.1"/>
+                        </Button.Behaviors>
+                    </Button>
                 </FlexLayout>
             </Border>
             <BoxView 

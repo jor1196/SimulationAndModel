@@ -23,6 +23,7 @@ public partial class OneClassViewModel : ObservableObject
     [RelayCommand]
     private async Task Calculate()
     {
+        await Task.Delay(1000);
         OneClassRecords = [];
 
         int customerNextArrivalSecond = Filter.InitialTime!.Value.Seconds + Filter.CustomerArrivalTime!.Value;
@@ -73,8 +74,12 @@ public partial class OneClassViewModel : ObservableObject
             }
 
             OneClassRecords.Add(record);
-            await Task.Yield();
         }
+    }
 
+    [RelayCommand]
+    private void ClearRecords()
+    {
+        OneClassRecords = [];
     }
 }
