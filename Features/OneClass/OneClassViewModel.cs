@@ -74,6 +74,8 @@ public partial class OneClassViewModel : ObservableObject
             }
 
             OneClassRecords.Add(record);
+
+            await Task.Delay(5);
         }
     }
 

@@ -127,7 +127,6 @@
                 </Border.StrokeShape>
                 <ScrollView
                     Orientation="Horizontal">
-
                     <CollectionView
                         HorizontalOptions="Fill"
                         ItemsSource="{Binding OneClassRecords}">
@@ -135,10 +134,11 @@
                             <DataTemplate>
                                 <Grid
                                     ColumnSpacing="-1"
-                                    RowDefinitions="60"
+                                    RowDefinitions="80"
                                     ColumnDefinitions="120,120,120,120,120,120">
                                     <Border
                                         Grid.Column="0"
+                                        Padding="10"
                                         VerticalOptions="Fill"    
                                         Stroke="Black">
                                         <Label
@@ -148,6 +148,7 @@
                                     </Border>
                                     <Border
                                         Grid.Column="1"
+                                        Padding="10"
                                         VerticalOptions="Fill"
                                         Stroke="Black">
                                         <Label
@@ -157,6 +158,7 @@
                                     </Border>
                                     <Border
                                         Grid.Column="2"
+                                        Padding="10"
                                         VerticalOptions="Fill"
                                         Stroke="Black">
                                         <Label
@@ -166,8 +168,8 @@
                                     </Border>
                                     <Border
                                         Grid.Column="3"
+                                        Padding="10"
                                         VerticalOptions="Fill"
-                                        HorizontalOptions="Fill"
                                         Stroke="Black">
                                         <Label
                                             VerticalOptions="Center"
@@ -176,6 +178,7 @@
                                     </Border>
                                     <Border
                                         Grid.Column="4"
+                                        Padding="10"
                                         VerticalOptions="Fill"
                                         Stroke="Black">
                                         <Label
@@ -185,6 +188,7 @@
                                     </Border>
                                     <Border
                                         Grid.Column="5"
+                                        Padding="10"
                                         VerticalOptions="Fill"
                                         Stroke="Black">
                                         <Label
@@ -199,12 +203,12 @@
                             <DataTemplate x:DataType="models:OneClassRecord">
                                 <Grid
                                     ColumnSpacing="-1"
-                                    RowDefinitions="60"
+                                    RowDefinitions="80"
                                     ColumnDefinitions="120,120,120,120,120,120">
                                     <Border
                                         Grid.Column="0"
+                                        Padding="10"
                                         VerticalOptions="Fill"
-                                        HorizontalOptions="Fill"
                                         Stroke="Black">
                                         <Label
                                             VerticalOptions="Center"
@@ -213,8 +217,8 @@
                                     </Border>
                                     <Border
                                         Grid.Column="1"
+                                        Padding="10"
                                         VerticalOptions="Fill"
-                                        HorizontalOptions="Fill"
                                         Stroke="Black">
                                         <Label
                                             VerticalOptions="Center"
@@ -223,8 +227,8 @@
                                     </Border>
                                     <Border
                                         Grid.Column="2"
+                                        Padding="10"
                                         VerticalOptions="Fill"
-                                        HorizontalOptions="Fill"
                                         Stroke="Black">
                                         <Label
                                             VerticalOptions="Center"
@@ -233,8 +237,8 @@
                                     </Border>
                                     <Border
                                         Grid.Column="3"
+                                        Padding="10"
                                         VerticalOptions="Fill"
-                                        HorizontalOptions="Fill"
                                         Stroke="Black">
                                         <Label
                                             VerticalOptions="Center"
@@ -243,8 +247,8 @@
                                     </Border>
                                     <Border
                                         Grid.Column="4"
+                                        Padding="10"
                                         VerticalOptions="Fill"
-                                        HorizontalOptions="Fill"
                                         Stroke="Black">
                                         <Label
                                             VerticalOptions="Center"
@@ -253,8 +257,8 @@
                                     </Border>
                                     <Border
                                         Grid.Column="5"
+                                        Padding="10"
                                         VerticalOptions="Fill"
-                                        HorizontalOptions="Fill"
                                         Stroke="Black">
                                         <Label
                                             VerticalOptions="Center"
