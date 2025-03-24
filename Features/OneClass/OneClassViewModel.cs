@@ -40,20 +40,18 @@ public partial class OneClassViewModel : ObservableObject
     private bool _serviceStationState;
 
     [ObservableProperty]
-    private int _customerQueueCount;
+    private int? _customerQueueCount;
 
     [RelayCommand]
     private async Task Calculate()
     {
         await Shell.Current.DisplayAlert("Advertencia", "Aquellos filtros que no estan configurados se les agregara un valor aleatorio", "Ok");
 
-        if (HasCustomerArrivalRange && ToCustomerArrivalTime == null)
-            ToCustomerArrivalTime ??= _random.Next(0, 60);
+        ToCustomerArrivalTime ??= _random.Next(0, 60);
         
         FromCustomerArrivalTime ??= _random.Next(0, 60);
 
-        if (HasEndServiceRange && ToEndServiceTime == null)
-            ToEndServiceTime ??= _random.Next(0, 60);
+        ToEndServiceTime ??= _random.Next(0, 60);
 
         FromEndServiceTime ??= _random.Next(0, 60);
 
@@ -61,6 +59,7 @@ public partial class OneClassViewModel : ObservableObject
 
         InitialTime ??= GeneratorRandomTimeSpan(8);
         EndTime ??= InitialTime + GeneratorRandomTimeSpan(8);
+        CustomerQueueCount ??= _random.Next(0, 20);
 
         var customerNextArrivalSecond = CalculateCustomerNextArrivalTime(InitialTime.Value).Seconds;
         var endNextServiceSecond = customerNextArrivalSecond + CalculateEndNextServiceTime(InitialTime.Value).Seconds;
@@ -71,7 +70,7 @@ public partial class OneClassViewModel : ObservableObject
             CustomerNextArrivalTime = new(InitialTime.Value.Hours, InitialTime.Value.Minutes, customerNextArrivalSecond),
             NextEndServiceTime = new(InitialTime.Value.Hours, InitialTime.Value.Minutes, endNextServiceSecond),
             CustomerServedCount = 0,
-            CustomerQueueCount = CustomerQueueCount,
+            CustomerQueueCount = CustomerQueueCount.Value,
             ServiceStationState = ServiceStationState
         };
 
