@@ -26,55 +26,181 @@
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="5,5,5,5" />
                 </Border.StrokeShape>
-                <FlexLayout
+                <VerticalStackLayout>
+                    <FlexLayout
                     Wrap="Wrap">
-                    <inputLayout:SfTextInputLayout
+                        <inputLayout:SfTextInputLayout
                         Hint="Hora de Inicio"
                         Margin="5"
                         HeightRequest="100"
                         MaximumWidthRequest="200">
-                        <TimePicker
+                            <TimePicker
                             TextColor="Black"
-                            Time="{Binding Filter.InitialTime}">
-                            <TimePicker.Behaviors>
-                            </TimePicker.Behaviors>
-                        </TimePicker>
-                    </inputLayout:SfTextInputLayout>
-                    <inputLayout:SfTextInputLayout
+                            Time="{Binding InitialTime}">
+                                <TimePicker.Behaviors>
+                                </TimePicker.Behaviors>
+                            </TimePicker>
+                        </inputLayout:SfTextInputLayout>
+                        <inputLayout:SfTextInputLayout
                         Hint="Tiempo de Llegada del Cliente"
-                        HelperText="Ingreselo en segundos"
+                        HelperText="Ingrese los segundos"
                         Margin="5"
                         HeightRequest="100"
                         MaximumWidthRequest="200">
-                        <editors:SfNumericEntry
+                            <inputLayout:SfTextInputLayout.Triggers>
+                                <DataTrigger
+                                    TargetType="inputLayout:SfTextInputLayout"
+                                    Binding="{Binding HasCustomerArrivalRange}"
+                                    Value="true">
+                                    <Setter Property="Hint" Value="Tiempo de Llegada del Cliente Inicial" />
+                                </DataTrigger>
+                            </inputLayout:SfTextInputLayout.Triggers>
+                            <editors:SfNumericEntry
                             AllowNull="True"
                             Minimum="1"
                             CustomFormat="0"
-                            Value="{Binding Filter.CustomerArrivalTime}"/>
-                    </inputLayout:SfTextInputLayout>
-                    <inputLayout:SfTextInputLayout
+                            Value="{Binding FromCustomerArrivalTime}"/>
+                        </inputLayout:SfTextInputLayout>
+                        <inputLayout:SfTextInputLayout
+                            Hint="Tiempo de Llegada del Cliente Final"
+                            HelperText="Ingrese los segundos"
+                            Margin="5"
+                            HeightRequest="100"
+                            MaximumWidthRequest="200"
+                            IsVisible="{Binding HasCustomerArrivalRange}">
+                            <editors:SfNumericEntry
+                                AllowNull="True"
+                                Minimum="1"
+                                CustomFormat="0"
+                                Value="{Binding ToCustomerArrivalTime}"/>
+                        </inputLayout:SfTextInputLayout>
+                        <HorizontalStackLayout
+                            HeightRequest="100"
+                            VerticalOptions="Center"
+                            Margin="5,0">
+                            <HorizontalStackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding HasCustomerArrivalRangeCheckingCommand}" />
+                            </HorizontalStackLayout.GestureRecognizers>
+                            <CheckBox
+                                VerticalOptions="Center"
+                                IsChecked="{Binding HasCustomerArrivalRange}"/>
+                            <Label
+                            VerticalOptions="Center"
+                            Text="Activar Rango">
+                                <Label.Triggers>
+                                    <DataTrigger
+                                    TargetType="Label"
+                                    Binding="{Binding HasCustomerArrivalRange}"
+                                    Value="true">
+                                        <Setter Property="Text" Value="Desactivar Rango" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                        </HorizontalStackLayout>
+                        <inputLayout:SfTextInputLayout
                         Hint="Tiempo de Fin de Servicio"
-                        HelperText="Ingreselo en segundos"
+                        HelperText="Ingrese los segundos"
                         Margin="5"
                         HeightRequest="100"
                         MaximumWidthRequest="200">
-                        <editors:SfNumericEntry
+                            <inputLayout:SfTextInputLayout.Triggers>
+                                <DataTrigger
+                                    TargetType="inputLayout:SfTextInputLayout"
+                                    Binding="{Binding HasEndServiceRange}"
+                                    Value="True">
+                                    <Setter Property="Hint" Value="Tiempo de Fin de Servicio Inicial" />
+                                </DataTrigger>
+                            </inputLayout:SfTextInputLayout.Triggers>
+                            <editors:SfNumericEntry
                             AllowNull="True"
                             Minimum="1"
                             CustomFormat="0"
-                            Value="{Binding Filter.EndServiceTime}"/>
-                    </inputLayout:SfTextInputLayout>
-                    <inputLayout:SfTextInputLayout
+                            Value="{Binding FromEndServiceTime}"/>
+                        </inputLayout:SfTextInputLayout>
+                        <inputLayout:SfTextInputLayout
+                            Hint="Tiempo de Fin de Servicio Final"
+                            HelperText="Ingrese los segundos"
+                            Margin="5"
+                            HeightRequest="100"
+                            MaximumWidthRequest="200"
+                            IsVisible="{Binding HasEndServiceRange}">
+                            <editors:SfNumericEntry
+                            AllowNull="True"
+                            Minimum="1"
+                            CustomFormat="0"
+                            Value="{Binding ToEndServiceTime}"/>
+                        </inputLayout:SfTextInputLayout>
+                        <HorizontalStackLayout
+                        HeightRequest="100"
+                        VerticalOptions="Center"
+                        Margin="5,0">
+                            <HorizontalStackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding HasEndServiceRangeCheckingCommand}" />
+                            </HorizontalStackLayout.GestureRecognizers>
+                            <CheckBox
+                                VerticalOptions="Center"
+                                IsChecked="{Binding HasEndServiceRange}"/>
+                            <Label
+                            VerticalOptions="Center"
+                            Text="Activar Rango">
+                                <Label.Triggers>
+                                    <DataTrigger
+                                    TargetType="Label"
+                                    Binding="{Binding HasEndServiceRange}"
+                                    Value="true">
+                                        <Setter Property="Text" Value="Desactivar Rango" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                        </HorizontalStackLayout>
+                        <inputLayout:SfTextInputLayout
                         Hint="Hora Final"
                         Margin="5"
                         HeightRequest="100"
                         MaximumWidthRequest="200">
-                        <TimePicker
+                            <TimePicker
                             TextColor="Black"
-                            Time="{Binding Filter.EndTime}">
-                        </TimePicker>
-                    </inputLayout:SfTextInputLayout>
-                    <Button
+                            Time="{Binding EndTime}">
+                            </TimePicker>
+                        </inputLayout:SfTextInputLayout>
+                        <inputLayout:SfTextInputLayout
+                            Hint="Cantidad de clientes en cola"
+                            Margin="5"
+                            HeightRequest="100"
+                            MaximumWidthRequest="200">
+                            <editors:SfNumericEntry
+                            AllowNull="True"
+                            Minimum="1"
+                            CustomFormat="0"
+                            Value="{Binding CustomerQueueCount}"/>
+                        </inputLayout:SfTextInputLayout>
+                        <HorizontalStackLayout
+                        HeightRequest="100"
+                        VerticalOptions="Center"
+                        Margin="5,0">
+                            <HorizontalStackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ServiceStationStateCheckingCommand}" />
+                            </HorizontalStackLayout.GestureRecognizers>
+                            <CheckBox
+                                VerticalOptions="Center"
+                                IsChecked="{Binding ServiceStationState}"/>
+                            <Label
+                            VerticalOptions="Center"
+                            Text="Ocupar puesto de servicio">
+                                <Label.Triggers>
+                                    <DataTrigger
+                                    TargetType="Label"
+                                    Binding="{Binding ServiceStationState}"
+                                    Value="true">
+                                        <Setter Property="Text" Value="Desocupar puesto de servicio" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                        </HorizontalStackLayout>
+                    </FlexLayout>
+                    <HorizontalStackLayout
+                        HorizontalOptions="End">
+                        <Button
                         x:Name="CalculateButton"
                         Margin="5,5,5,0"
                         HeightRequest="80"
@@ -82,16 +208,16 @@
                         CornerRadius="40"
                         Text="Calcular"
                         Command="{Binding CalculateCommand}">
-                        <Button.Behaviors>
-                            <toolkit:TouchBehavior 
+                            <Button.Behaviors>
+                                <toolkit:TouchBehavior 
                                 BindingContext="{Binding BindingContext,Source={x:Reference CalculateButton}, x:DataType=Button}"
                                 DefaultAnimationEasing="{x:Static Easing.CubicInOut}"
                                 DefaultAnimationDuration="750"
                                 HoveredBackgroundColor="BlueViolet"
                                 HoveredScale="1.1"/>
-                        </Button.Behaviors>
-                    </Button>
-                    <Button
+                            </Button.Behaviors>
+                        </Button>
+                        <Button
                         x:Name="ClearButton"
                         Margin="5,5,5,0"
                         HeightRequest="80"
@@ -100,16 +226,17 @@
                         Text="Limpiar"
                         BackgroundColor="Red"
                         Command="{Binding ClearRecordsCommand}">
-                        <Button.Behaviors>
-                            <toolkit:TouchBehavior 
+                            <Button.Behaviors>
+                                <toolkit:TouchBehavior 
                                 BindingContext="{Binding BindingContext,Source={x:Reference ClearButton}, x:DataType=Button}"
                                 DefaultAnimationEasing="{x:Static Easing.CubicInOut}"
                                 DefaultAnimationDuration="750"
                                 HoveredBackgroundColor="LightGreen"
                                 HoveredScale="1.1"/>
-                        </Button.Behaviors>
-                    </Button>
-                </FlexLayout>
+                            </Button.Behaviors>
+                        </Button>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
             </Border>
             <BoxView 
                 Grid.Row="1"
