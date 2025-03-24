@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:behaviors="clr-namespace:SimulationAndModel.Common.Behaviors"
     xmlns:editors="clr-namespace:Syncfusion.Maui.Toolkit.NumericEntry;assembly=Syncfusion.Maui.Toolkit"
     xmlns:effectsView="clr-namespace:Syncfusion.Maui.Toolkit.EffectsView;assembly=Syncfusion.Maui.Toolkit"
     xmlns:inputLayout="clr-namespace:Syncfusion.Maui.Toolkit.TextInputLayout;assembly=Syncfusion.Maui.Toolkit"
@@ -72,6 +73,9 @@
                                 Keyboard="Numeric"
                                 ClearButtonVisibility="WhileEditing"
                                 Text="{Binding ToCustomerArrivalTime}">
+                                <Entry.Behaviors>
+                                    <behaviors:NumericBehavior />
+                                </Entry.Behaviors>
                             </Entry>
                         </inputLayout:SfTextInputLayout>
                         <HorizontalStackLayout
@@ -124,16 +128,19 @@
                             HeightRequest="100"
                             MaximumWidthRequest="200"
                             IsVisible="{Binding HasEndServiceRange}">
-                            <editors:SfNumericEntry
-                            AllowNull="True"
-                            Minimum="1"
-                            CustomFormat="0"
-                            Value="{Binding ToEndServiceTime}"/>
+                            <Entry
+                                Keyboard="Numeric"
+                                ClearButtonVisibility="WhileEditing"
+                                Text="{Binding ToEndServiceTime}">
+                                <Entry.Behaviors>
+                                    <behaviors:NumericBehavior />
+                                </Entry.Behaviors>
+                            </Entry>
                         </inputLayout:SfTextInputLayout>
                         <HorizontalStackLayout
-                        HeightRequest="100"
-                        VerticalOptions="Center"
-                        Margin="5,0">
+                                HeightRequest="100"
+                                VerticalOptions="Center"
+                                Margin="5,0">
                             <HorizontalStackLayout.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding HasEndServiceRangeCheckingCommand}" />
                             </HorizontalStackLayout.GestureRecognizers>
