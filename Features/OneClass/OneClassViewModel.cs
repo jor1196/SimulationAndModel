@@ -42,8 +42,8 @@ public partial class OneClassViewModel : ObservableObject
     [ObservableProperty]
     private int? _customerQueueCount;
 
-    [RelayCommand]
-    private async Task Calculate()
+    [RelayCommand(FlowExceptionsToTaskScheduler = true)]
+    private async Task Calculate(CancellationToken cancellationToken)
     {
         await Shell.Current.DisplayAlert("Advertencia", "Aquellos filtros que no estan configurados se les agregara un valor aleatorio", "Ok");
 
@@ -122,13 +122,13 @@ public partial class OneClassViewModel : ObservableObject
                     record.ServiceStationState = true;
                 }
 
-                record.CustomerServedCount++;
+                //record.CustomerServedCount++;
                 record.NextEndServiceTime = CalculateEndNextServiceTime(record.CurrentTime);
             }
 
             OneClassRecords.Add(record);
 
-            await Task.Delay(5);
+            await Task.Delay(5, cancellationToken);
         }
     }
 
@@ -164,6 +164,12 @@ public partial class OneClassViewModel : ObservableObject
     private void ServiceStationStateChecking()
     {
         ServiceStationState = !ServiceStationState;
+    }
+
+    [RelayCommand]
+    private void CancelCalculate()
+    {
+        CalculateCommand.Cancel();
     }
 
     private TimeSpan CalculateCustomerNextArrivalTime(TimeSpan currentTime)

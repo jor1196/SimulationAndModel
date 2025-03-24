@@ -12,6 +12,11 @@
     x:Class="SimulationAndModel.Features.OneClass.OneClassPage"
     x:DataType="local:OneClassViewModel"
     BackgroundColor="White">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ScrollView>
         <Grid
             Padding="50, 0"
@@ -208,20 +213,42 @@
                     <HorizontalStackLayout
                         HorizontalOptions="End">
                         <Button
-                        x:Name="CalculateButton"
-                        Margin="5,5,5,0"
-                        HeightRequest="80"
-                        WidthRequest="80"
-                        CornerRadius="40"
-                        Text="Calcular"
-                        Command="{Binding CalculateCommand}">
+                            x:Name="CalculateButton"
+                            Margin="5,5,5,0"
+                            HeightRequest="80"
+                            WidthRequest="80"
+                            CornerRadius="40"
+                            Text="Calcular"
+                            IsVisible="{Binding CalculateCommand.IsRunning, Converter={StaticResource InvertedBoolConverter}}"
+                            Command="{Binding CalculateCommand}">
                             <Button.Behaviors>
                                 <toolkit:TouchBehavior 
-                                BindingContext="{Binding BindingContext,Source={x:Reference CalculateButton}, x:DataType=Button}"
-                                DefaultAnimationEasing="{x:Static Easing.CubicInOut}"
-                                DefaultAnimationDuration="750"
-                                HoveredBackgroundColor="BlueViolet"
-                                HoveredScale="1.1"/>
+                                    BindingContext="{Binding BindingContext,Source={x:Reference CalculateButton}, x:DataType=Button}"
+                                    DefaultAnimationEasing="{x:Static Easing.CubicInOut}"
+                                    DefaultAnimationDuration="750"
+                                    HoveredBackgroundColor="BlueViolet"
+                                    HoveredScale="1.1"/>
+                            </Button.Behaviors>
+                        </Button>
+                        <Button
+                            x:Name="CancelButton"
+                            Margin="5,5,5,0"
+                            Padding="0"
+                            HeightRequest="80"
+                            WidthRequest="80"
+                            CornerRadius="40"
+                            BackgroundColor="Yellow"
+                            TextColor="Black"
+                            Text="Cancelar"
+                            IsVisible="{Binding CalculateCommand.IsRunning}"
+                            Command="{Binding CancelCalculateCommand}">
+                            <Button.Behaviors>
+                                <toolkit:TouchBehavior 
+                                    BindingContext="{Binding BindingContext, Source={x:Reference CancelButton}, x:DataType=Button}"
+                                    DefaultAnimationEasing="{x:Static Easing.CubicInOut}"
+                                    DefaultAnimationDuration="750"
+                                    HoveredBackgroundColor="BlueViolet"
+                                    HoveredScale="1.1"/>
                             </Button.Behaviors>
                         </Button>
                         <Button
