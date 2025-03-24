@@ -7,14 +7,16 @@ namespace SimulationAndModel.Features.OneClass;
 
 public partial class OneClassViewModel : ObservableObject
 {
+    private readonly Random _random = new();
+
     [ObservableProperty]
     private ObservableCollection<OneClassRecord> _oneClassRecords = [];
 
     [ObservableProperty]
-    private TimeSpan? _initialTime = new(8,0,0);
+    private TimeSpan? _initialTime;
     
     [ObservableProperty]
-    private int? _fromCustomerArrivalTime = 30;
+    private int? _fromCustomerArrivalTime;
     
     [ObservableProperty]
     private int? _toCustomerArrivalTime;
@@ -23,7 +25,7 @@ public partial class OneClassViewModel : ObservableObject
     private bool _hasCustomerArrivalRange;
     
     [ObservableProperty]
-    private int? _fromEndServiceTime = 40;
+    private int? _fromEndServiceTime;
     
     [ObservableProperty]
     private int? _toEndServiceTime;
@@ -32,7 +34,7 @@ public partial class OneClassViewModel : ObservableObject
     private bool _hasEndServiceRange;
     
     [ObservableProperty]
-    private TimeSpan? _endTime = new(9,0,0);
+    private TimeSpan? _endTime;
 
     [ObservableProperty]
     private bool _serviceStationState;
@@ -43,17 +45,31 @@ public partial class OneClassViewModel : ObservableObject
     [RelayCommand]
     private async Task Calculate()
     {
-        await Task.Delay(1000);
-        OneClassRecords = [];
+        await Shell.Current.DisplayAlert("Advertencia", "Aquellos filtros que no estan configurados se les agregara un valor aleatorio", "Ok");
+
+        if (HasCustomerArrivalRange && ToCustomerArrivalTime == null)
+            ToCustomerArrivalTime ??= _random.Next(0, 60);
         
-        int customerNextArrivalSecond = InitialTime!.Value.Seconds + FromCustomerArrivalTime!.Value;
-        int customerEndServiceSecond = customerNextArrivalSecond + FromEndServiceTime!.Value;
+        FromCustomerArrivalTime ??= _random.Next(0, 60);
+
+        if (HasEndServiceRange && ToEndServiceTime == null)
+            ToEndServiceTime ??= _random.Next(0, 60);
+
+        FromEndServiceTime ??= _random.Next(0, 60);
+
+        OneClassRecords = [];
+
+        InitialTime ??= GeneratorRandomTimeSpan(8);
+        EndTime ??= InitialTime + GeneratorRandomTimeSpan(8);
+
+        var customerNextArrivalSecond = CalculateCustomerNextArrivalTime(InitialTime.Value).Seconds;
+        var endNextServiceSecond = customerNextArrivalSecond + CalculateEndNextServiceTime(InitialTime.Value).Seconds;
 
         OneClassRecord record = new()
         {
             CurrentTime = InitialTime.Value,
             CustomerNextArrivalTime = new(InitialTime.Value.Hours, InitialTime.Value.Minutes, customerNextArrivalSecond),
-            NextEndServiceTime = new(InitialTime.Value.Hours, InitialTime.Value.Minutes, customerEndServiceSecond),
+            NextEndServiceTime = new(InitialTime.Value.Hours, InitialTime.Value.Minutes, endNextServiceSecond),
             CustomerServedCount = 0,
             CustomerQueueCount = CustomerQueueCount,
             ServiceStationState = ServiceStationState
@@ -63,7 +79,7 @@ public partial class OneClassViewModel : ObservableObject
 
         while (record.CurrentTime <= EndTime)
         {
-            if (record.CustomerNextArrivalTime.GetValueOrDefault() <= record.NextEndServiceTime.GetValueOrDefault())
+            if (record.CustomerNextArrivalTime <= record.NextEndServiceTime)
             {
                 record.CurrentTime = record.CustomerNextArrivalTime;
 
@@ -77,7 +93,7 @@ public partial class OneClassViewModel : ObservableObject
                 else
                     record.CustomerQueueCount++;
 
-                record.CustomerNextArrivalTime = new(record.CurrentTime!.Value.Hours, record.CurrentTime!.Value.Minutes, record.CurrentTime!.Value.Seconds + FromCustomerArrivalTime!.Value);
+                record.CustomerNextArrivalTime = CalculateCustomerNextArrivalTime(record.CurrentTime);
             }
             else
             {
@@ -91,7 +107,7 @@ public partial class OneClassViewModel : ObservableObject
                 }
 
                 record.CustomerServedCount++;
-                record.NextEndServiceTime = new(record.CurrentTime.Value.Hours, record.CurrentTime.Value.Minutes, record.CurrentTime.Value.Seconds + FromEndServiceTime!.Value);
+                record.NextEndServiceTime = CalculateEndNextServiceTime(record.CurrentTime);
             }
 
             OneClassRecords.Add(record);
@@ -104,6 +120,16 @@ public partial class OneClassViewModel : ObservableObject
     private void ClearRecords()
     {
         OneClassRecords = [];
+        InitialTime = null;
+        FromCustomerArrivalTime = null;
+        ToCustomerArrivalTime = null;
+        FromEndServiceTime = null;
+        ToCustomerArrivalTime = null;
+        EndTime = null;
+        ServiceStationState = false;
+        HasCustomerArrivalRange = false;
+        HasEndServiceRange = false;
+        CustomerQueueCount = 0;
     }
 
     [RelayCommand]
@@ -122,5 +148,34 @@ public partial class OneClassViewModel : ObservableObject
     private void ServiceStationStateChecking()
     {
         ServiceStationState = !ServiceStationState;
+    }
+
+    private TimeSpan CalculateCustomerNextArrivalTime(TimeSpan currentTime)
+    {
+        int customerNextSecond;
+        if (HasCustomerArrivalRange)
+            customerNextSecond = new Random().Next(FromCustomerArrivalTime!.Value, ToCustomerArrivalTime!.Value);
+        else
+            customerNextSecond = FromCustomerArrivalTime!.Value;
+
+        return new(currentTime.Hours, currentTime.Minutes, currentTime.Seconds + customerNextSecond);
+    }
+
+    private TimeSpan CalculateEndNextServiceTime(TimeSpan currentTime)
+    {
+        int customerNextSecond;
+        if (HasEndServiceRange)
+            customerNextSecond = new Random().Next(FromEndServiceTime!.Value, ToEndServiceTime!.Value);
+        else
+            customerNextSecond = FromEndServiceTime!.Value;
+
+        return new(currentTime.Hours, currentTime.Minutes, currentTime.Seconds + customerNextSecond);
+    }
+
+    private TimeSpan GeneratorRandomTimeSpan(int maxHours)
+    {
+        long randomTicks = (long)(_random.NextDouble() * TimeSpan.FromHours(maxHours).Ticks);
+
+        return new TimeSpan(randomTicks);
     }
 }

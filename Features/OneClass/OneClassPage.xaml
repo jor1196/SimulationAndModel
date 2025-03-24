@@ -170,7 +170,7 @@
                             MaximumWidthRequest="200">
                             <editors:SfNumericEntry
                             AllowNull="True"
-                            Minimum="1"
+                            Minimum="0"
                             CustomFormat="0"
                             Value="{Binding CustomerQueueCount}"/>
                         </inputLayout:SfTextInputLayout>
