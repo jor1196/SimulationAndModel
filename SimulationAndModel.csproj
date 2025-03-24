@@ -63,15 +63,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <AndroidResource Remove="Common\**" />
-	  <Compile Remove="Common\**" />
-	  <EmbeddedResource Remove="Common\**" />
-	  <MauiCss Remove="Common\**" />
-	  <MauiXaml Remove="Common\**" />
-	  <None Remove="Common\**" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Maui" Version="11.1.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.50" />
@@ -83,6 +74,10 @@
 	  <Compile Update="Features\OneClass\OneClassPage.xaml.cs">
 	    <DependentUpon>OneClassPage.xaml</DependentUpon>
 	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Common\Behaviors\" />
 	</ItemGroup>
 
 </Project>

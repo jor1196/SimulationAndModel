@@ -68,11 +68,11 @@
                             HeightRequest="100"
                             MaximumWidthRequest="200"
                             IsVisible="{Binding HasCustomerArrivalRange}">
-                            <editors:SfNumericEntry
-                                AllowNull="True"
-                                Minimum="1"
-                                CustomFormat="0"
-                                Value="{Binding ToCustomerArrivalTime}"/>
+                            <Entry
+                                Keyboard="Numeric"
+                                ClearButtonVisibility="WhileEditing"
+                                Text="{Binding ToCustomerArrivalTime}">
+                            </Entry>
                         </inputLayout:SfTextInputLayout>
                         <HorizontalStackLayout
                             HeightRequest="100"

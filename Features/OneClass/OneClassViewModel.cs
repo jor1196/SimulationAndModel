@@ -13,7 +13,7 @@ public partial class OneClassViewModel : ObservableObject
     private ObservableCollection<OneClassRecord> _oneClassRecords = [];
 
     [ObservableProperty]
-    private TimeSpan? _initialTime;
+    private TimeSpan _initialTime;
     
     [ObservableProperty]
     private int? _fromCustomerArrivalTime;
@@ -34,7 +34,7 @@ public partial class OneClassViewModel : ObservableObject
     private bool _hasEndServiceRange;
     
     [ObservableProperty]
-    private TimeSpan? _endTime;
+    private TimeSpan _endTime;
 
     [ObservableProperty]
     private bool _serviceStationState;
@@ -47,28 +47,45 @@ public partial class OneClassViewModel : ObservableObject
     {
         await Shell.Current.DisplayAlert("Advertencia", "Aquellos filtros que no estan configurados se les agregara un valor aleatorio", "Ok");
 
-        ToCustomerArrivalTime ??= _random.Next(0, 60);
-        
         FromCustomerArrivalTime ??= _random.Next(0, 60);
 
-        ToEndServiceTime ??= _random.Next(0, 60);
+        if (HasCustomerArrivalRange && ToCustomerArrivalTime == null)
+        {
+            do
+            {
+                ToCustomerArrivalTime = _random.Next(0, 60);
+            }
+            while (FromCustomerArrivalTime <= ToCustomerArrivalTime);
+        }
 
         FromEndServiceTime ??= _random.Next(0, 60);
 
+        if (HasEndServiceRange && ToEndServiceTime == null)
+        {
+            do
+            {
+                ToEndServiceTime = _random.Next(0, 60);
+            }
+            while (FromEndServiceTime <= ToEndServiceTime);
+        }
+
         OneClassRecords = [];
 
-        InitialTime ??= GeneratorRandomTimeSpan(8);
-        EndTime ??= InitialTime + GeneratorRandomTimeSpan(8);
+        InitialTime = InitialTime == default ? GeneratorRandomTimeSpan(8) : InitialTime;
+        
+        while (EndTime == default || EndTime <= InitialTime)
+            EndTime = GeneratorRandomTimeSpan(8);
+
         CustomerQueueCount ??= _random.Next(0, 20);
 
-        var customerNextArrivalSecond = CalculateCustomerNextArrivalTime(InitialTime.Value).Seconds;
-        var endNextServiceSecond = customerNextArrivalSecond + CalculateEndNextServiceTime(InitialTime.Value).Seconds;
+        var customerNextArrivalSecond = CalculateCustomerNextArrivalTime(InitialTime).Seconds;
+        var endNextServiceSecond = customerNextArrivalSecond + CalculateEndNextServiceTime(InitialTime).Seconds;
 
         OneClassRecord record = new()
         {
-            CurrentTime = InitialTime.Value,
-            CustomerNextArrivalTime = new(InitialTime.Value.Hours, InitialTime.Value.Minutes, customerNextArrivalSecond),
-            NextEndServiceTime = new(InitialTime.Value.Hours, InitialTime.Value.Minutes, endNextServiceSecond),
+            CurrentTime = InitialTime,
+            CustomerNextArrivalTime = new(InitialTime.Hours, InitialTime.Minutes, customerNextArrivalSecond),
+            NextEndServiceTime = new(InitialTime.Hours, InitialTime.Minutes, endNextServiceSecond),
             CustomerServedCount = 0,
             CustomerQueueCount = CustomerQueueCount.Value,
             ServiceStationState = ServiceStationState
@@ -119,12 +136,12 @@ public partial class OneClassViewModel : ObservableObject
     private void ClearRecords()
     {
         OneClassRecords = [];
-        InitialTime = null;
+        InitialTime = default;
         FromCustomerArrivalTime = null;
         ToCustomerArrivalTime = null;
         FromEndServiceTime = null;
         ToCustomerArrivalTime = null;
-        EndTime = null;
+        EndTime = default;
         ServiceStationState = false;
         HasCustomerArrivalRange = false;
         HasEndServiceRange = false;
