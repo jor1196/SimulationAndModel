@@ -49,7 +49,6 @@
                         <editors:SfNumericEntry
                             AllowNull="True"
                             Minimum="1"
-                            Maximum="60"
                             CustomFormat="0"
                             Value="{Binding Filter.CustomerArrivalTime}"/>
                     </inputLayout:SfTextInputLayout>
@@ -62,7 +61,6 @@
                         <editors:SfNumericEntry
                             AllowNull="True"
                             Minimum="1"
-                            Maximum="60"
                             CustomFormat="0"
                             Value="{Binding Filter.EndServiceTime}"/>
                     </inputLayout:SfTextInputLayout>
