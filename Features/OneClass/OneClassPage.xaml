@@ -2,6 +2,7 @@
 <ContentPage 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:behaviors="clr-namespace:SimulationAndModel.Common.Behaviors"
+    xmlns:converters="clr-namespace:SimulationAndModel.Common.Converters"
     xmlns:editors="clr-namespace:Syncfusion.Maui.Toolkit.NumericEntry;assembly=Syncfusion.Maui.Toolkit"
     xmlns:effectsView="clr-namespace:Syncfusion.Maui.Toolkit.EffectsView;assembly=Syncfusion.Maui.Toolkit"
     xmlns:inputLayout="clr-namespace:Syncfusion.Maui.Toolkit.TextInputLayout;assembly=Syncfusion.Maui.Toolkit"
@@ -15,6 +16,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+            <converters:ServiceStationStateBoolToStringConverter x:Key="ServiceStationStateBoolToStringConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ScrollView>
@@ -39,13 +41,11 @@
                         Hint="Hora de Inicio"
                         Margin="5"
                         HeightRequest="100"
-                        MaximumWidthRequest="200">
+                        MaximumWidthRequest="250">
                             <TimePicker
-                            TextColor="Black"
-                            Time="{Binding InitialTime}">
-                                <TimePicker.Behaviors>
-                                </TimePicker.Behaviors>
-                            </TimePicker>
+                                TextColor="Black"
+                                Format="HH:mm"
+                                Time="{Binding InitialTime}"/>
                         </inputLayout:SfTextInputLayout>
                         <inputLayout:SfTextInputLayout
                         Hint="Tiempo de Llegada del Cliente"
@@ -169,11 +169,11 @@
                         Hint="Hora Final"
                         Margin="5"
                         HeightRequest="100"
-                        MaximumWidthRequest="200">
+                        MaximumWidthRequest="250">
                             <TimePicker
+                                Format="HH:mm"
                             TextColor="Black"
-                            Time="{Binding EndTime}">
-                            </TimePicker>
+                            Time="{Binding EndTime}"/>
                         </inputLayout:SfTextInputLayout>
                         <inputLayout:SfTextInputLayout
                             Hint="Cantidad de clientes en cola"
@@ -181,10 +181,10 @@
                             HeightRequest="100"
                             MaximumWidthRequest="200">
                             <editors:SfNumericEntry
-                            AllowNull="True"
-                            Minimum="0"
-                            CustomFormat="0"
-                            Value="{Binding CustomerQueueCount}"/>
+                                AllowNull="True"
+                                Minimum="0"
+                                CustomFormat="0"
+                                Value="{Binding CustomerQueueCount, TargetNullValue={x:Null}, FallbackValue={x:Null}}"/>
                         </inputLayout:SfTextInputLayout>
                         <HorizontalStackLayout
                         HeightRequest="100"
@@ -197,40 +197,62 @@
                                 VerticalOptions="Center"
                                 IsChecked="{Binding ServiceStationState}"/>
                             <Label
-                            VerticalOptions="Center"
-                            Text="Ocupar puesto de servicio">
+                                VerticalOptions="Center"
+                                Text="Ocupar puesto de servicio">
                                 <Label.Triggers>
                                     <DataTrigger
-                                    TargetType="Label"
-                                    Binding="{Binding ServiceStationState}"
-                                    Value="true">
+                                        TargetType="Label"
+                                        Binding="{Binding ServiceStationState, Mode=OneWay}"
+                                        Value="true">
                                         <Setter Property="Text" Value="Desocupar puesto de servicio" />
                                     </DataTrigger>
                                 </Label.Triggers>
                             </Label>
                         </HorizontalStackLayout>
                     </FlexLayout>
-                    <HorizontalStackLayout
+                    <FlexLayout
+                        JustifyContent="SpaceBetween">
+                        <Border
+                            BackgroundColor="MediumPurple"
+                            Padding="25,0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="5,5,5,5" />
+                            </Border.StrokeShape>
+                            <Label
+                            Grid.Column="0"
+                            VerticalTextAlignment="Center"
+                            TextColor="White"
+                            FontSize="Medium">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Numeros de filas: "/>
+                                        <Span Text="{Binding OneClassRecords.Count, Mode=OneWay}"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </Border>
+                        <HorizontalStackLayout
+                            Grid.Column="2"
                         HorizontalOptions="End">
-                        <Button
+                            <Button
                             x:Name="CalculateButton"
                             Margin="5,5,5,0"
                             HeightRequest="80"
                             WidthRequest="80"
                             CornerRadius="40"
                             Text="Calcular"
-                            IsVisible="{Binding CalculateCommand.IsRunning, Converter={StaticResource InvertedBoolConverter}}"
+                            IsVisible="{Binding CalculateCommand.IsRunning, Converter={StaticResource InvertedBoolConverter}, Mode=OneWay}"
                             Command="{Binding CalculateCommand}">
-                            <Button.Behaviors>
-                                <toolkit:TouchBehavior 
+                                <Button.Behaviors>
+                                    <toolkit:TouchBehavior 
                                     BindingContext="{Binding BindingContext,Source={x:Reference CalculateButton}, x:DataType=Button}"
                                     DefaultAnimationEasing="{x:Static Easing.CubicInOut}"
                                     DefaultAnimationDuration="750"
                                     HoveredBackgroundColor="BlueViolet"
                                     HoveredScale="1.1"/>
-                            </Button.Behaviors>
-                        </Button>
-                        <Button
+                                </Button.Behaviors>
+                            </Button>
+                            <Button
                             x:Name="CancelButton"
                             Margin="5,5,5,0"
                             Padding="0"
@@ -240,36 +262,37 @@
                             BackgroundColor="Yellow"
                             TextColor="Black"
                             Text="Cancelar"
-                            IsVisible="{Binding CalculateCommand.IsRunning}"
+                            IsVisible="{Binding CalculateCommand.IsRunning, Mode=OneWay}"
                             Command="{Binding CancelCalculateCommand}">
-                            <Button.Behaviors>
-                                <toolkit:TouchBehavior 
+                                <Button.Behaviors>
+                                    <toolkit:TouchBehavior 
                                     BindingContext="{Binding BindingContext, Source={x:Reference CancelButton}, x:DataType=Button}"
                                     DefaultAnimationEasing="{x:Static Easing.CubicInOut}"
                                     DefaultAnimationDuration="750"
                                     HoveredBackgroundColor="BlueViolet"
                                     HoveredScale="1.1"/>
-                            </Button.Behaviors>
-                        </Button>
-                        <Button
-                        x:Name="ClearButton"
-                        Margin="5,5,5,0"
-                        HeightRequest="80"
-                        WidthRequest="80"
-                        CornerRadius="40"
-                        Text="Limpiar"
-                        BackgroundColor="Red"
-                        Command="{Binding ClearRecordsCommand}">
-                            <Button.Behaviors>
-                                <toolkit:TouchBehavior 
+                                </Button.Behaviors>
+                            </Button>
+                            <Button
+                                x:Name="ClearButton"
+                                Margin="5,5,5,0"
+                                HeightRequest="80"
+                                WidthRequest="80"
+                                CornerRadius="40"
+                                Text="Limpiar"
+                                BackgroundColor="Red"
+                                Command="{Binding ClearRecordsCommand}">
+                                <Button.Behaviors>
+                                    <toolkit:TouchBehavior 
                                 BindingContext="{Binding BindingContext,Source={x:Reference ClearButton}, x:DataType=Button}"
                                 DefaultAnimationEasing="{x:Static Easing.CubicInOut}"
                                 DefaultAnimationDuration="750"
                                 HoveredBackgroundColor="LightGreen"
                                 HoveredScale="1.1"/>
-                            </Button.Behaviors>
-                        </Button>
-                    </HorizontalStackLayout>
+                                </Button.Behaviors>
+                            </Button>
+                        </HorizontalStackLayout>
+                    </FlexLayout>
                 </VerticalStackLayout>
             </Border>
             <BoxView 
@@ -290,7 +313,7 @@
                     Orientation="Horizontal">
                     <CollectionView
                         HorizontalOptions="Fill"
-                        ItemsSource="{Binding OneClassRecords}">
+                        ItemsSource="{Binding OneClassRecords, Mode=OneWay}">
                         <CollectionView.HeaderTemplate>
                             <DataTemplate>
                                 <Grid
@@ -404,7 +427,7 @@
                                         <Label
                                             VerticalOptions="Center"
                                             HorizontalOptions="Center"
-                                            Text="{Binding CustomerQueueCount}"/>
+                                            Text="{Binding CustomerQueueCount, Mode=OneWay}"/>
                                     </Border>
                                     <Border
                                         Grid.Column="4"
@@ -414,7 +437,7 @@
                                         <Label
                                             VerticalOptions="Center"
                                             HorizontalOptions="Center"
-                                            Text="{Binding ServiceStationState}"/>
+                                            Text="{Binding ServiceStationState, Converter={StaticResource ServiceStationStateBoolToStringConverter}, Mode=OneWay}"/>
                                     </Border>
                                     <Border
                                         Grid.Column="5"
@@ -424,7 +447,7 @@
                                         <Label
                                             VerticalOptions="Center"
                                             HorizontalOptions="Center"
-                                            Text="{Binding CustomerServedCount}"/>
+                                            Text="{Binding CustomerServedCount, Mode=OneWay}"/>
                                     </Border>
                                 </Grid>
                             </DataTemplate>

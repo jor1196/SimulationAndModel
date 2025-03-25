@@ -40,7 +40,7 @@ public partial class OneClassViewModel : ObservableObject
     private bool _serviceStationState;
 
     [ObservableProperty]
-    private int? _customerQueueCount;
+    private int? _customerQueueCount = null;
 
     [RelayCommand(FlowExceptionsToTaskScheduler = true)]
     private async Task Calculate(CancellationToken cancellationToken)
@@ -70,11 +70,14 @@ public partial class OneClassViewModel : ObservableObject
         }
 
         OneClassRecords = [];
-
-        InitialTime = InitialTime == default ? GeneratorRandomTimeSpan(8) : InitialTime;
         
-        while (EndTime == default || EndTime <= InitialTime)
-            EndTime = GeneratorRandomTimeSpan(8);
+        if (InitialTime == default && EndTime == default)
+        {
+            InitialTime = GeneratorRandomTimeSpan(8);
+
+            while (InitialTime >= EndTime)
+                EndTime = GeneratorRandomTimeSpan(8);
+        }
 
         CustomerQueueCount ??= _random.Next(0, 20);
 
@@ -122,7 +125,7 @@ public partial class OneClassViewModel : ObservableObject
                     record.ServiceStationState = true;
                 }
 
-                //record.CustomerServedCount++;
+                record.CustomerServedCount++;
                 record.NextEndServiceTime = CalculateEndNextServiceTime(record.CurrentTime);
             }
 
@@ -145,7 +148,7 @@ public partial class OneClassViewModel : ObservableObject
         ServiceStationState = false;
         HasCustomerArrivalRange = false;
         HasEndServiceRange = false;
-        CustomerQueueCount = 0;
+        CustomerQueueCount = null;
     }
 
     [RelayCommand]
