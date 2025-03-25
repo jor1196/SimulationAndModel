@@ -211,7 +211,8 @@
                         </HorizontalStackLayout>
                     </FlexLayout>
                     <FlexLayout
-                        JustifyContent="SpaceBetween">
+                        JustifyContent="SpaceBetween"
+                        Wrap="Wrap">
                         <Border
                             BackgroundColor="MediumPurple"
                             Padding="25,0">
@@ -219,7 +220,6 @@
                                 <RoundRectangle CornerRadius="5,5,5,5" />
                             </Border.StrokeShape>
                             <Label
-                            Grid.Column="0"
                             VerticalTextAlignment="Center"
                             TextColor="White"
                             FontSize="Medium">
