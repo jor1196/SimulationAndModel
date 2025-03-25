@@ -41,7 +41,7 @@
                         Hint="Hora de Inicio"
                         Margin="5"
                         HeightRequest="100"
-                        MaximumWidthRequest="250">
+                        WidthRequest="250">
                             <TimePicker
                                 TextColor="Black"
                                 Format="HH:mm"
@@ -52,7 +52,7 @@
                         HelperText="Ingrese los segundos"
                         Margin="5"
                         HeightRequest="100"
-                        MaximumWidthRequest="200">
+                        MaximumWidthRequest="250">
                             <inputLayout:SfTextInputLayout.Triggers>
                                 <DataTrigger
                                     TargetType="inputLayout:SfTextInputLayout"
@@ -72,7 +72,7 @@
                             HelperText="Ingrese los segundos"
                             Margin="5"
                             HeightRequest="100"
-                            MaximumWidthRequest="200"
+                            MaximumWidthRequest="250"
                             IsVisible="{Binding HasCustomerArrivalRange}">
                             <Entry
                                 Keyboard="Numeric"
@@ -111,7 +111,7 @@
                         HelperText="Ingrese los segundos"
                         Margin="5"
                         HeightRequest="100"
-                        MaximumWidthRequest="200">
+                        MaximumWidthRequest="250">
                             <inputLayout:SfTextInputLayout.Triggers>
                                 <DataTrigger
                                     TargetType="inputLayout:SfTextInputLayout"
@@ -131,7 +131,7 @@
                             HelperText="Ingrese los segundos"
                             Margin="5"
                             HeightRequest="100"
-                            MaximumWidthRequest="200"
+                            MaximumWidthRequest="250"
                             IsVisible="{Binding HasEndServiceRange}">
                             <Entry
                                 Keyboard="Numeric"
@@ -169,7 +169,7 @@
                         Hint="Hora Final"
                         Margin="5"
                         HeightRequest="100"
-                        MaximumWidthRequest="250">
+                        WidthRequest="250">
                             <TimePicker
                                 Format="HH:mm"
                             TextColor="Black"
@@ -179,7 +179,7 @@
                             Hint="Cantidad de clientes en cola"
                             Margin="5"
                             HeightRequest="100"
-                            MaximumWidthRequest="200">
+                            MaximumWidthRequest="250">
                             <editors:SfNumericEntry
                                 AllowNull="True"
                                 Minimum="0"
