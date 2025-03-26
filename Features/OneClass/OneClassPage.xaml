@@ -215,6 +215,7 @@
                         Wrap="Wrap">
                         <Border
                             BackgroundColor="MediumPurple"
+                            HeightRequest="80"
                             Padding="25,0">
                             <Border.StrokeShape>
                                 <RoundRectangle CornerRadius="5,5,5,5" />
@@ -231,10 +232,10 @@
                                 </Label.FormattedText>
                             </Label>
                         </Border>
-                        <HorizontalStackLayout
-                            Grid.Column="2"
-                        HorizontalOptions="End">
-                            <Button
+                        <BoxView 
+                            FlexLayout.Grow="1"
+                            BackgroundColor="Transparent"/>
+                        <Button
                             x:Name="CalculateButton"
                             Margin="5,5,5,0"
                             HeightRequest="80"
@@ -291,7 +292,6 @@
                                 HoveredScale="1.1"/>
                                 </Button.Behaviors>
                             </Button>
-                        </HorizontalStackLayout>
                     </FlexLayout>
                 </VerticalStackLayout>
             </Border>
