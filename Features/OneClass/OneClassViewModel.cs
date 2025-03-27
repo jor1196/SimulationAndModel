@@ -10,7 +10,7 @@ public partial class OneClassViewModel : ObservableObject
     private readonly Random _random = new();
 
     [ObservableProperty]
-    private ObservableCollection<OneClassRecord> _oneClassRecords = [];
+    private ObservableCollection<OneClassRecord>? _oneClassRecords;
 
     [ObservableProperty]
     private TimeSpan _initialTime;
@@ -41,6 +41,10 @@ public partial class OneClassViewModel : ObservableObject
 
     [ObservableProperty]
     private int? _customerQueueCount = null;
+
+
+    [ObservableProperty]
+    private OneClassRecord? _lasterRecord;
 
     [RelayCommand(FlowExceptionsToTaskScheduler = true)]
     private async Task Calculate(CancellationToken cancellationToken)
@@ -133,12 +137,14 @@ public partial class OneClassViewModel : ObservableObject
 
             await Task.Delay(5, cancellationToken);
         }
+
+        SetLastRecord();
     }
 
     [RelayCommand]
     private void ClearRecords()
     {
-        OneClassRecords = [];
+        OneClassRecords = null;
         InitialTime = default;
         FromCustomerArrivalTime = null;
         ToCustomerArrivalTime = null;
@@ -149,6 +155,7 @@ public partial class OneClassViewModel : ObservableObject
         HasCustomerArrivalRange = false;
         HasEndServiceRange = false;
         CustomerQueueCount = null;
+        LasterRecord = null;
     }
 
     [RelayCommand]
@@ -173,6 +180,7 @@ public partial class OneClassViewModel : ObservableObject
     private void CancelCalculate()
     {
         CalculateCommand.Cancel();
+        SetLastRecord();
     }
 
     private TimeSpan CalculateCustomerNextArrivalTime(TimeSpan currentTime)
@@ -202,5 +210,10 @@ public partial class OneClassViewModel : ObservableObject
         long randomTicks = (long)(_random.NextDouble() * TimeSpan.FromHours(maxHours).Ticks);
 
         return new TimeSpan(randomTicks);
+    }
+
+    private void SetLastRecord()
+    {
+        LasterRecord = OneClassRecords.Last();
     }
 }

@@ -15,6 +15,7 @@
     BackgroundColor="White">
     <ContentPage.Resources>
         <ResourceDictionary>
+            <toolkit:IsNotNullConverter x:Key="IsNotNullConverter" />
             <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
             <converters:ServiceStationStateBoolToStringConverter x:Key="ServiceStationStateBoolToStringConverter" />
         </ResourceDictionary>
@@ -274,6 +275,108 @@
                             </Button.Behaviors>
                         </Button>
                     </FlexLayout>
+                    <Grid
+                        Margin="0,25,0,0"
+                        ColumnSpacing="-1"
+                        HorizontalOptions="Center"
+                        IsVisible="{Binding LasterRecord, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
+                        RowDefinitions="80, 80">
+                        <Label
+                            Grid.Row="0"
+                            Grid.ColumnSpan="6"
+                            FontAttributes="Italic"
+                            FontSize="Header"
+                            HorizontalOptions="Center"
+                            Text="Vector Final" />
+                        <Border
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Padding="10"
+                            Stroke="Black"
+                            VerticalOptions="Fill">
+                            <Label
+                                HorizontalOptions="Center"
+                                Text="{Binding LasterRecord.CurrentTime, Mode=OneWay}"
+                                VerticalOptions="Center" />
+                        </Border>
+                        <Border
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Padding="10"
+                            Stroke="Black"
+                            VerticalOptions="Fill">
+                            <Label
+                                HorizontalOptions="Center"
+                                Text="{Binding LasterRecord.CustomerNextArrivalTime, Mode=OneWay}"
+                                VerticalOptions="Center" />
+                        </Border>
+                        <Border
+                            Grid.Row="1"
+                            Grid.Column="2"
+                            Padding="10"
+                            Stroke="Black"
+                            VerticalOptions="Fill">
+                            <Label
+                                HorizontalOptions="Center"
+                                Text="{Binding LasterRecord.NextEndServiceTime, Mode=OneWay}"
+                                VerticalOptions="Center" />
+                        </Border>
+                        <Border
+                            Grid.Row="1"
+                            Grid.Column="3"
+                            Padding="10"
+                            Stroke="Black"
+                            VerticalOptions="Fill">
+                            <Label
+                                HorizontalOptions="Center"
+                                Text="{Binding LasterRecord.CustomerQueueCount, Mode=OneWay}"
+                                VerticalOptions="Center" />
+                        </Border>
+                        <Border
+                            Grid.Row="1"
+                            Grid.Column="4"
+                            Padding="10"
+                            Stroke="Black"
+                            VerticalOptions="Fill">
+                            <Label
+                                HorizontalOptions="Center"
+                                Text="{Binding LasterRecord.ServiceStationState, Converter={StaticResource ServiceStationStateBoolToStringConverter}, Mode=OneWay}"
+                                VerticalOptions="Center" />
+                        </Border>
+                        <Border
+                            Grid.Row="1"
+                            Grid.Column="5"
+                            Padding="10"
+                            Stroke="Black"
+                            VerticalOptions="Fill">
+                            <Label
+                                HorizontalOptions="Center"
+                                Text="{Binding LasterRecord.CustomerServedCount, Mode=OneWay}"
+                                VerticalOptions="Center" />
+                        </Border>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroupList>
+                                <VisualStateGroup>
+                                    <VisualState x:Name="Greater300">
+                                        <VisualState.StateTriggers>
+                                            <AdaptiveTrigger MinWindowWidth="300" />
+                                        </VisualState.StateTriggers>
+                                        <VisualState.Setters>
+                                            <Setter Property="ColumnDefinitions" Value="80,80,80,80,80,80" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="Greater800">
+                                        <VisualState.StateTriggers>
+                                            <AdaptiveTrigger MinWindowWidth="900" />
+                                        </VisualState.StateTriggers>
+                                        <VisualState.Setters>
+                                            <Setter Property="ColumnDefinitions" Value="120,120,120,120,120,120" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateGroupList>
+                        </VisualStateManager.VisualStateGroups>
+                    </Grid>
                 </VerticalStackLayout>
             </Border>
             <BoxView Grid.Row="1" BackgroundColor="Transparent" />
@@ -289,207 +392,183 @@
                     <RoundRectangle CornerRadius="5,5,5,5" />
                 </Border.StrokeShape>
                 <ScrollView Orientation="Horizontal">
-                    <CollectionView HorizontalOptions="Fill" ItemsSource="{Binding OneClassRecords, Mode=OneWay}">
-                        <CollectionView.HeaderTemplate>
-                            <DataTemplate>
-                                <Grid ColumnSpacing="-1" RowDefinitions="80">
-                                    <Border
-                                        Grid.Column="0"
-                                        Padding="10"
-                                        Stroke="Black"
-                                        VerticalOptions="Fill">
-                                        <Label
-                                            HorizontalOptions="Center"
-                                            Text="Hora Actual"
-                                            VerticalOptions="Center" />
-                                    </Border>
-                                    <Border
-                                        Grid.Column="1"
-                                        Padding="10"
-                                        Stroke="Black"
-                                        VerticalOptions="Fill">
-                                        <Label
-                                            HorizontalOptions="Center"
-                                            Text="Hora prox. llegada de cliente"
-                                            VerticalOptions="Center" />
-                                    </Border>
-                                    <Border
-                                        Grid.Column="2"
-                                        Padding="10"
-                                        Stroke="Black"
-                                        VerticalOptions="Fill">
-                                        <Label
-                                            HorizontalOptions="Center"
-                                            Text="Hora Prox. Fin de Servicio"
-                                            VerticalOptions="Center" />
-                                    </Border>
-                                    <Border
-                                        Grid.Column="3"
-                                        Padding="10"
-                                        Stroke="Black"
-                                        VerticalOptions="Fill">
-                                        <Label
-                                            HorizontalOptions="Center"
-                                            Text="Clientes en cola"
-                                            VerticalOptions="Center" />
-                                    </Border>
-                                    <Border
-                                        Grid.Column="4"
-                                        Padding="10"
-                                        Stroke="Black"
-                                        VerticalOptions="Fill">
-                                        <Label
-                                            HorizontalOptions="Center"
-                                            Text="Estado del Puesto de Servicio"
-                                            VerticalOptions="Center" />
-                                    </Border>
-                                    <Border
-                                        Grid.Column="5"
-                                        Padding="10"
-                                        Stroke="Black"
-                                        VerticalOptions="Fill">
-                                        <Label
-                                            HorizontalOptions="Center"
-                                            Text="Clientes atendidos"
-                                            VerticalOptions="Center" />
-                                    </Border>
-                                    <VisualStateManager.VisualStateGroups>
-                                        <VisualStateGroupList>
-                                            <VisualStateGroup>
-                                                <VisualState x:Name="Greater300">
-                                                    <VisualState.StateTriggers>
-                                                        <AdaptiveTrigger MinWindowWidth="300" />
-                                                    </VisualState.StateTriggers>
-                                                    <VisualState.Setters>
-                                                        <Setter Property="ColumnDefinitions" Value="80,80,80,80,80,80" />
-                                                    </VisualState.Setters>
-                                                </VisualState>
-                                                <VisualState x:Name="Greater800">
-                                                    <VisualState.StateTriggers>
-                                                        <AdaptiveTrigger MinWindowWidth="900" />
-                                                    </VisualState.StateTriggers>
-                                                    <VisualState.Setters>
-                                                        <Setter Property="ColumnDefinitions" Value="120,120,120,120,120,120" />
-                                                    </VisualState.Setters>
-                                                </VisualState>
-                                            </VisualStateGroup>
-                                        </VisualStateGroupList>
-                                    </VisualStateManager.VisualStateGroups>
-                                </Grid>
-                            </DataTemplate>
-                        </CollectionView.HeaderTemplate>
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate x:DataType="models:OneClassRecord">
-                                <Grid ColumnSpacing="-1" RowDefinitions="80">
-                                    <Border
-                                        Grid.Column="0"
-                                        Padding="10"
-                                        Stroke="Black"
-                                        VerticalOptions="Fill">
-                                        <Label
-                                            HorizontalOptions="Center"
-                                            Text="{Binding CurrentTime, Mode=OneWay}"
-                                            VerticalOptions="Center" />
-                                    </Border>
-                                    <Border
-                                        Grid.Column="1"
-                                        Padding="10"
-                                        Stroke="Black"
-                                        VerticalOptions="Fill">
-                                        <Label
-                                            HorizontalOptions="Center"
-                                            Text="{Binding CustomerNextArrivalTime, Mode=OneWay}"
-                                            VerticalOptions="Center" />
-                                    </Border>
-                                    <Border
-                                        Grid.Column="2"
-                                        Padding="10"
-                                        Stroke="Black"
-                                        VerticalOptions="Fill">
-                                        <Label
-                                            HorizontalOptions="Center"
-                                            Text="{Binding NextEndServiceTime, Mode=OneWay}"
-                                            VerticalOptions="Center" />
-                                    </Border>
-                                    <Border
-                                        Grid.Column="3"
-                                        Padding="10"
-                                        Stroke="Black"
-                                        VerticalOptions="Fill">
-                                        <Label
-                                            HorizontalOptions="Center"
-                                            Text="{Binding CustomerQueueCount, Mode=OneWay}"
-                                            VerticalOptions="Center" />
-                                    </Border>
-                                    <Border
-                                        Grid.Column="4"
-                                        Padding="10"
-                                        Stroke="Black"
-                                        VerticalOptions="Fill">
-                                        <Label
-                                            HorizontalOptions="Center"
-                                            Text="{Binding ServiceStationState, Converter={StaticResource ServiceStationStateBoolToStringConverter}, Mode=OneWay}"
-                                            VerticalOptions="Center" />
-                                    </Border>
-                                    <Border
-                                        Grid.Column="5"
-                                        Padding="10"
-                                        Stroke="Black"
-                                        VerticalOptions="Fill">
-                                        <Label
-                                            HorizontalOptions="Center"
-                                            Text="{Binding CustomerServedCount, Mode=OneWay}"
-                                            VerticalOptions="Center" />
-                                    </Border>
-                                    <VisualStateManager.VisualStateGroups>
-                                        <VisualStateGroupList>
-                                            <VisualStateGroup>
-                                                <VisualState x:Name="Greater300">
-                                                    <VisualState.StateTriggers>
-                                                        <AdaptiveTrigger MinWindowWidth="300" />
-                                                    </VisualState.StateTriggers>
-                                                    <VisualState.Setters>
-                                                        <Setter Property="ColumnDefinitions" Value="80,80,80,80,80,80" />
-                                                    </VisualState.Setters>
-                                                </VisualState>
-                                                <VisualState x:Name="Greater800">
-                                                    <VisualState.StateTriggers>
-                                                        <AdaptiveTrigger MinWindowWidth="900" />
-                                                    </VisualState.StateTriggers>
-                                                    <VisualState.Setters>
-                                                        <Setter Property="ColumnDefinitions" Value="120,120,120,120,120,120" />
-                                                    </VisualState.Setters>
-                                                </VisualState>
-                                            </VisualStateGroup>
-                                        </VisualStateGroupList>
-                                    </VisualStateManager.VisualStateGroups>
-                                </Grid>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
+                    <VerticalStackLayout>
+                        <Grid ColumnSpacing="-1" RowDefinitions="80">
+                            <Border
+                                Grid.Column="0"
+                                Padding="10"
+                                Stroke="Black"
+                                VerticalOptions="Fill">
+                                <Label
+                                    HorizontalOptions="Center"
+                                    Text="Hora Actual"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <Border
+                                Grid.Column="1"
+                                Padding="10"
+                                Stroke="Black"
+                                VerticalOptions="Fill">
+                                <Label
+                                    HorizontalOptions="Center"
+                                    Text="Hora prox. llegada de cliente"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <Border
+                                Grid.Column="2"
+                                Padding="10"
+                                Stroke="Black"
+                                VerticalOptions="Fill">
+                                <Label
+                                    HorizontalOptions="Center"
+                                    Text="Hora Prox. Fin de Servicio"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <Border
+                                Grid.Column="3"
+                                Padding="10"
+                                Stroke="Black"
+                                VerticalOptions="Fill">
+                                <Label
+                                    HorizontalOptions="Center"
+                                    Text="Clientes en cola"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <Border
+                                Grid.Column="4"
+                                Padding="10"
+                                Stroke="Black"
+                                VerticalOptions="Fill">
+                                <Label
+                                    HorizontalOptions="Center"
+                                    Text="Estado del Puesto de Servicio"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <Border
+                                Grid.Column="5"
+                                Padding="10"
+                                Stroke="Black"
+                                VerticalOptions="Fill">
+                                <Label
+                                    HorizontalOptions="Center"
+                                    Text="Clientes atendidos"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroupList>
+                                    <VisualStateGroup>
+                                        <VisualState x:Name="Greater300">
+                                            <VisualState.StateTriggers>
+                                                <AdaptiveTrigger MinWindowWidth="300" />
+                                            </VisualState.StateTriggers>
+                                            <VisualState.Setters>
+                                                <Setter Property="ColumnDefinitions" Value="80,80,80,80,80,80" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                        <VisualState x:Name="Greater800">
+                                            <VisualState.StateTriggers>
+                                                <AdaptiveTrigger MinWindowWidth="900" />
+                                            </VisualState.StateTriggers>
+                                            <VisualState.Setters>
+                                                <Setter Property="ColumnDefinitions" Value="120,120,120,120,120,120" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateGroupList>
+                            </VisualStateManager.VisualStateGroups>
+                        </Grid>
+                        <CollectionView HorizontalOptions="Fill" ItemsSource="{Binding OneClassRecords, Mode=OneWay}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="models:OneClassRecord">
+                                    <Grid ColumnSpacing="-1" RowDefinitions="80">
+                                        <Border
+                                            Grid.Column="0"
+                                            Padding="10"
+                                            Stroke="Black"
+                                            VerticalOptions="Fill">
+                                            <Label
+                                                HorizontalOptions="Center"
+                                                Text="{Binding CurrentTime, Mode=OneWay}"
+                                                VerticalOptions="Center" />
+                                        </Border>
+                                        <Border
+                                            Grid.Column="1"
+                                            Padding="10"
+                                            Stroke="Black"
+                                            VerticalOptions="Fill">
+                                            <Label
+                                                HorizontalOptions="Center"
+                                                Text="{Binding CustomerNextArrivalTime, Mode=OneWay}"
+                                                VerticalOptions="Center" />
+                                        </Border>
+                                        <Border
+                                            Grid.Column="2"
+                                            Padding="10"
+                                            Stroke="Black"
+                                            VerticalOptions="Fill">
+                                            <Label
+                                                HorizontalOptions="Center"
+                                                Text="{Binding NextEndServiceTime, Mode=OneWay}"
+                                                VerticalOptions="Center" />
+                                        </Border>
+                                        <Border
+                                            Grid.Column="3"
+                                            Padding="10"
+                                            Stroke="Black"
+                                            VerticalOptions="Fill">
+                                            <Label
+                                                HorizontalOptions="Center"
+                                                Text="{Binding CustomerQueueCount, Mode=OneWay}"
+                                                VerticalOptions="Center" />
+                                        </Border>
+                                        <Border
+                                            Grid.Column="4"
+                                            Padding="10"
+                                            Stroke="Black"
+                                            VerticalOptions="Fill">
+                                            <Label
+                                                HorizontalOptions="Center"
+                                                Text="{Binding ServiceStationState, Converter={StaticResource ServiceStationStateBoolToStringConverter}, Mode=OneWay}"
+                                                VerticalOptions="Center" />
+                                        </Border>
+                                        <Border
+                                            Grid.Column="5"
+                                            Padding="10"
+                                            Stroke="Black"
+                                            VerticalOptions="Fill">
+                                            <Label
+                                                HorizontalOptions="Center"
+                                                Text="{Binding CustomerServedCount, Mode=OneWay}"
+                                                VerticalOptions="Center" />
+                                        </Border>
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroupList>
+                                                <VisualStateGroup>
+                                                    <VisualState x:Name="Greater300">
+                                                        <VisualState.StateTriggers>
+                                                            <AdaptiveTrigger MinWindowWidth="300" />
+                                                        </VisualState.StateTriggers>
+                                                        <VisualState.Setters>
+                                                            <Setter Property="ColumnDefinitions" Value="80,80,80,80,80,80" />
+                                                        </VisualState.Setters>
+                                                    </VisualState>
+                                                    <VisualState x:Name="Greater800">
+                                                        <VisualState.StateTriggers>
+                                                            <AdaptiveTrigger MinWindowWidth="900" />
+                                                        </VisualState.StateTriggers>
+                                                        <VisualState.Setters>
+                                                            <Setter Property="ColumnDefinitions" Value="120,120,120,120,120,120" />
+                                                        </VisualState.Setters>
+                                                    </VisualState>
+                                                </VisualStateGroup>
+                                            </VisualStateGroupList>
+                                        </VisualStateManager.VisualStateGroups>
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </VerticalStackLayout>
                 </ScrollView>
-                <VisualStateManager.VisualStateGroups>
-                    <VisualStateGroupList>
-                        <VisualStateGroup>
-                            <VisualState x:Name="Greater300">
-                                <VisualState.StateTriggers>
-                                    <AdaptiveTrigger MinWindowWidth="300" />
-                                </VisualState.StateTriggers>
-                                <VisualState.Setters>
-                                    <Setter Property="Padding" Value="20" />
-                                </VisualState.Setters>
-                            </VisualState>
-                            <VisualState x:Name="Greater800">
-                                <VisualState.StateTriggers>
-                                    <AdaptiveTrigger MinWindowWidth="900" />
-                                </VisualState.StateTriggers>
-                                <VisualState.Setters>
-                                    <Setter Property="Padding" Value="50,20" />
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateGroupList>
-                </VisualStateManager.VisualStateGroups>
             </Border>
         </Grid>
     </ScrollView>
