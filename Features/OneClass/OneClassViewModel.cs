@@ -50,6 +50,9 @@ public partial class OneClassViewModel : ObservableObject
     private async Task Calculate(CancellationToken cancellationToken)
     {
         await Shell.Current.DisplayAlert("Advertencia", "Aquellos filtros que no estan configurados se les agregara un valor aleatorio", "Ok");
+        
+        OneClassRecords = [];
+        LasterRecord = null;
 
         FromCustomerArrivalTime ??= _random.Next(0, 60);
 
@@ -73,8 +76,6 @@ public partial class OneClassViewModel : ObservableObject
             while (FromEndServiceTime <= ToEndServiceTime);
         }
 
-        OneClassRecords = [];
-        
         if (InitialTime == default && EndTime == default)
         {
             InitialTime = GeneratorRandomTimeSpan(8);
@@ -127,9 +128,9 @@ public partial class OneClassViewModel : ObservableObject
                 {
                     record.CustomerQueueCount--;
                     record.ServiceStationState = true;
+                    record.CustomerServedCount++;
                 }
 
-                record.CustomerServedCount++;
                 record.NextEndServiceTime = CalculateEndNextServiceTime(record.CurrentTime);
             }
 
@@ -214,6 +215,6 @@ public partial class OneClassViewModel : ObservableObject
 
     private void SetLastRecord()
     {
-        LasterRecord = OneClassRecords.Last();
+        LasterRecord = OneClassRecords?.Last();
     }
 }
