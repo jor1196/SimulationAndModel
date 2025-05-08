@@ -13,6 +13,9 @@ public partial class OneExerciseViewModel : ObservableObject
     private ObservableCollection<OneExerciseRecord>? _oneExerciseRecords;
 
     [ObservableProperty]
+    private OneExerciseRecord? _lasterRecord;
+
+    [ObservableProperty]
     private TimeSpan _initialTime;
     
     [ObservableProperty]
@@ -41,10 +44,6 @@ public partial class OneExerciseViewModel : ObservableObject
 
     [ObservableProperty]
     private int? _customerQueueCount = null;
-
-
-    [ObservableProperty]
-    private OneExerciseRecord? _lasterRecord;
 
     [RelayCommand(FlowExceptionsToTaskScheduler = true)]
     private async Task Calculate(CancellationToken cancellationToken)
