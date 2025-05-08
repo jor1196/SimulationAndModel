@@ -214,7 +214,7 @@
                                 <Label.FormattedText>
                                     <FormattedString>
                                         <Span Text="Numeros de filas: " />
-                                        <Span Text="{Binding OneClassRecords.Count, Mode=OneWay}" />
+                                        <Span Text="{Binding OneExerciseRecords.Count, Mode=OneWay}" />
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
@@ -493,7 +493,7 @@
                                 </VisualStateGroupList>
                             </VisualStateManager.VisualStateGroups>
                         </Grid>
-                        <CollectionView HorizontalOptions="Fill" ItemsSource="{Binding OneClassRecords, Mode=OneWay}">
+                        <CollectionView HorizontalOptions="Fill" ItemsSource="{Binding OneExerciseRecords, Mode=OneWay}">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate x:DataType="models:OneExerciseRecord">
                                     <Grid ColumnSpacing="-1" RowDefinitions="80">
