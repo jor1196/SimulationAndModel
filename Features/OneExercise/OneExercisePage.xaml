@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="SimulationAndModel.Features.OneClass.OneClassPage"
+    x:Class="SimulationAndModel.Features.OneExercise.OneExercisePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:behaviors="clr-namespace:SimulationAndModel.Common.Behaviors"
@@ -8,10 +8,10 @@
     xmlns:editors="clr-namespace:Syncfusion.Maui.Toolkit.NumericEntry;assembly=Syncfusion.Maui.Toolkit"
     xmlns:effectsView="clr-namespace:Syncfusion.Maui.Toolkit.EffectsView;assembly=Syncfusion.Maui.Toolkit"
     xmlns:inputLayout="clr-namespace:Syncfusion.Maui.Toolkit.TextInputLayout;assembly=Syncfusion.Maui.Toolkit"
-    xmlns:local="clr-namespace:SimulationAndModel.Features.OneClass"
-    xmlns:models="clr-namespace:SimulationAndModel.Features.OneClass.Models"
+    xmlns:local="clr-namespace:SimulationAndModel.Features.OneExercise"
+    xmlns:models="clr-namespace:SimulationAndModel.Features.OneExercise.Models"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-    x:DataType="local:OneClassViewModel"
+    x:DataType="local:OneExerciseViewModel"
     BackgroundColor="White">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -495,7 +495,7 @@
                         </Grid>
                         <CollectionView HorizontalOptions="Fill" ItemsSource="{Binding OneClassRecords, Mode=OneWay}">
                             <CollectionView.ItemTemplate>
-                                <DataTemplate x:DataType="models:OneClassRecord">
+                                <DataTemplate x:DataType="models:OneExerciseRecord">
                                     <Grid ColumnSpacing="-1" RowDefinitions="80">
                                         <Border
                                             Grid.Column="0"

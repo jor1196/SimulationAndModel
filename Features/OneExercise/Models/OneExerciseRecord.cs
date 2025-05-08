@@ -1,6 +1,6 @@
-namespace SimulationAndModel.Features.OneClass.Models;
+namespace SimulationAndModel.Features.OneExercise.Models;
 
-public class OneClassRecord
+public class OneExerciseRecord
 {
     public required TimeSpan CurrentTime { get; set; }
     public required TimeSpan CustomerNextArrivalTime { get; set; }
