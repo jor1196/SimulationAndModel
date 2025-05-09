@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Platform;
 using SimulationAndModel.Features.OneExercise;
+using SimulationAndModel.Features.ThreeExercise;
 using SimulationAndModel.Features.TwoExercise;
 using Syncfusion.Maui.Toolkit.Hosting;
 
@@ -24,9 +25,10 @@ public static class MauiProgram
 
 		builder.Services.AddTransient<OneExerciseViewModel>();
 		builder.Services.AddTransient<TwoExerciseViewModel>();
+		builder.Services.AddTransient<ThreeExerciseViewModel>();
 
 #if DEBUG
-		builder.Logging.AddDebug();
+        builder.Logging.AddDebug();
 #endif
         return builder.Build();
 	}
