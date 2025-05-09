@@ -1,7 +1,8 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Platform;
-using SimulationAndModel.Features.OneClass;
+using SimulationAndModel.Features.OneExercise;
+using SimulationAndModel.Features.TwoExercise;
 using Syncfusion.Maui.Toolkit.Hosting;
 
 namespace SimulationAndModel;
@@ -21,7 +22,8 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			});
 
-		builder.Services.AddTransient<OneClassViewModel>();
+		builder.Services.AddTransient<OneExerciseViewModel>();
+		builder.Services.AddTransient<TwoExerciseViewModel>();
 
 #if DEBUG
 		builder.Logging.AddDebug();

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="SimulationAndModel.Features.OneClass.OneClassPage"
+    x:Class="SimulationAndModel.Features.TwoExercise.TwoExercisePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:behaviors="clr-namespace:SimulationAndModel.Common.Behaviors"
@@ -8,16 +8,17 @@
     xmlns:editors="clr-namespace:Syncfusion.Maui.Toolkit.NumericEntry;assembly=Syncfusion.Maui.Toolkit"
     xmlns:effectsView="clr-namespace:Syncfusion.Maui.Toolkit.EffectsView;assembly=Syncfusion.Maui.Toolkit"
     xmlns:inputLayout="clr-namespace:Syncfusion.Maui.Toolkit.TextInputLayout;assembly=Syncfusion.Maui.Toolkit"
-    xmlns:local="clr-namespace:SimulationAndModel.Features.OneClass"
-    xmlns:models="clr-namespace:SimulationAndModel.Features.OneClass.Models"
+    xmlns:local="clr-namespace:SimulationAndModel.Features.TwoExercise"
+    xmlns:models="clr-namespace:SimulationAndModel.Features.TwoExercise.Models"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-    x:DataType="local:OneClassViewModel"
-    BackgroundColor="White">
+    Title="TwoExercisePage"
+    x:DataType="local:TwoExerciseViewModel">
     <ContentPage.Resources>
         <ResourceDictionary>
             <toolkit:IsNotNullConverter x:Key="IsNotNullConverter" />
             <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
             <converters:ServiceStationStateBoolToStringConverter x:Key="ServiceStationStateBoolToStringConverter" />
+            <converters:ServerStateBoolToStringConverter x:Key="ServerStateBoolToStringConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <ScrollView Padding="50,30,50,50" Background="Pink">
@@ -48,17 +49,39 @@
                         <inputLayout:SfTextInputLayout
                             Margin="5"
                             HeightRequest="100"
+                            Hint="Hora Final"
+                            WidthRequest="250">
+                            <TimePicker
+                                Format="HH:mm"
+                                TextColor="Black"
+                                Time="{Binding EndTime}" />
+                        </inputLayout:SfTextInputLayout>
+                        <inputLayout:SfTextInputLayout
+                            Margin="5"
+                            HeightRequest="100"
+                            Hint="Hora de Abandono del Servidor"
+                            WidthRequest="250">
+                            <TimePicker
+                                Format="HH:mm"
+                                TextColor="Black"
+                                Time="{Binding ServerAbandonmentTime}" />
+                        </inputLayout:SfTextInputLayout>
+                        <inputLayout:SfTextInputLayout
+                            Margin="5"
+                            HeightRequest="100"
+                            Hint="Hora de Regreso del Servidor"
+                            WidthRequest="250">
+                            <TimePicker
+                                Format="HH:mm"
+                                TextColor="Black"
+                                Time="{Binding ServerReturnTime}" />
+                        </inputLayout:SfTextInputLayout>
+                        <inputLayout:SfTextInputLayout
+                            Margin="5"
+                            HeightRequest="100"
                             HelperText="Ingrese los segundos"
                             Hint="Tiempo de Llegada del Cliente"
                             MaximumWidthRequest="250">
-                            <inputLayout:SfTextInputLayout.Triggers>
-                                <DataTrigger
-                                    Binding="{Binding HasCustomerArrivalRange}"
-                                    TargetType="inputLayout:SfTextInputLayout"
-                                    Value="true">
-                                    <Setter Property="Hint" Value="Tiempo de Llegada del Cliente Inicial" />
-                                </DataTrigger>
-                            </inputLayout:SfTextInputLayout.Triggers>
                             <editors:SfNumericEntry
                                 AllowNull="True"
                                 CustomFormat="0"
@@ -69,51 +92,8 @@
                             Margin="5"
                             HeightRequest="100"
                             HelperText="Ingrese los segundos"
-                            Hint="Tiempo de Llegada del Cliente Final"
-                            IsVisible="{Binding HasCustomerArrivalRange}"
-                            MaximumWidthRequest="250">
-                            <Entry
-                                ClearButtonVisibility="WhileEditing"
-                                Keyboard="Numeric"
-                                Text="{Binding ToCustomerArrivalTime}">
-                                <Entry.Behaviors>
-                                    <behaviors:NumericBehavior />
-                                </Entry.Behaviors>
-                            </Entry>
-                        </inputLayout:SfTextInputLayout>
-                        <HorizontalStackLayout
-                            Margin="5,0"
-                            HeightRequest="100"
-                            VerticalOptions="Center">
-                            <HorizontalStackLayout.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding HasCustomerArrivalRangeCheckingCommand}" />
-                            </HorizontalStackLayout.GestureRecognizers>
-                            <CheckBox IsChecked="{Binding HasCustomerArrivalRange}" VerticalOptions="Center" />
-                            <Label Text="Activar Rango" VerticalOptions="Center">
-                                <Label.Triggers>
-                                    <DataTrigger
-                                        Binding="{Binding HasCustomerArrivalRange}"
-                                        TargetType="Label"
-                                        Value="true">
-                                        <Setter Property="Text" Value="Desactivar Rango" />
-                                    </DataTrigger>
-                                </Label.Triggers>
-                            </Label>
-                        </HorizontalStackLayout>
-                        <inputLayout:SfTextInputLayout
-                            Margin="5"
-                            HeightRequest="100"
-                            HelperText="Ingrese los segundos"
                             Hint="Tiempo de Fin de Servicio"
                             MaximumWidthRequest="250">
-                            <inputLayout:SfTextInputLayout.Triggers>
-                                <DataTrigger
-                                    Binding="{Binding HasEndServiceRange}"
-                                    TargetType="inputLayout:SfTextInputLayout"
-                                    Value="True">
-                                    <Setter Property="Hint" Value="Tiempo de Fin de Servicio Inicial" />
-                                </DataTrigger>
-                            </inputLayout:SfTextInputLayout.Triggers>
                             <editors:SfNumericEntry
                                 AllowNull="True"
                                 CustomFormat="0"
@@ -124,46 +104,25 @@
                             Margin="5"
                             HeightRequest="100"
                             HelperText="Ingrese los segundos"
-                            Hint="Tiempo de Fin de Servicio Final"
-                            IsVisible="{Binding HasEndServiceRange}"
+                            Hint="Tiempo de Abandono del Servidor"
                             MaximumWidthRequest="250">
-                            <Entry
-                                ClearButtonVisibility="WhileEditing"
-                                Keyboard="Numeric"
-                                Text="{Binding ToEndServiceTime}">
-                                <Entry.Behaviors>
-                                    <behaviors:NumericBehavior />
-                                </Entry.Behaviors>
-                            </Entry>
+                            <editors:SfNumericEntry
+                                AllowNull="True"
+                                CustomFormat="0"
+                                Minimum="1"
+                                Value="{Binding FromServerAbandonmentTime}" />
                         </inputLayout:SfTextInputLayout>
-                        <HorizontalStackLayout
-                            Margin="5,0"
-                            HeightRequest="100"
-                            VerticalOptions="Center">
-                            <HorizontalStackLayout.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding HasEndServiceRangeCheckingCommand}" />
-                            </HorizontalStackLayout.GestureRecognizers>
-                            <CheckBox IsChecked="{Binding HasEndServiceRange}" VerticalOptions="Center" />
-                            <Label Text="Activar Rango" VerticalOptions="Center">
-                                <Label.Triggers>
-                                    <DataTrigger
-                                        Binding="{Binding HasEndServiceRange}"
-                                        TargetType="Label"
-                                        Value="true">
-                                        <Setter Property="Text" Value="Desactivar Rango" />
-                                    </DataTrigger>
-                                </Label.Triggers>
-                            </Label>
-                        </HorizontalStackLayout>
                         <inputLayout:SfTextInputLayout
                             Margin="5"
                             HeightRequest="100"
-                            Hint="Hora Final"
-                            WidthRequest="250">
-                            <TimePicker
-                                Format="HH:mm"
-                                TextColor="Black"
-                                Time="{Binding EndTime}" />
+                            HelperText="Ingrese los segundos"
+                            Hint="Tiempo de Regreso del Servidor"
+                            MaximumWidthRequest="250">
+                            <editors:SfNumericEntry
+                                AllowNull="True"
+                                CustomFormat="0"
+                                Minimum="1"
+                                Value="{Binding FromServerReturnTime}" />
                         </inputLayout:SfTextInputLayout>
                         <inputLayout:SfTextInputLayout
                             Margin="5"
@@ -195,6 +154,25 @@
                                 </Label.Triggers>
                             </Label>
                         </HorizontalStackLayout>
+                        <HorizontalStackLayout
+                            Margin="5,0"
+                            HeightRequest="100"
+                            VerticalOptions="Center">
+                            <HorizontalStackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ServerStateCheckingCommand}" />
+                            </HorizontalStackLayout.GestureRecognizers>
+                            <CheckBox IsChecked="{Binding ServerState}" VerticalOptions="Center" />
+                            <Label Text="Ocupar servidor (Sin Don Satur)" VerticalOptions="Center">
+                                <Label.Triggers>
+                                    <DataTrigger
+                                        Binding="{Binding ServerState, Mode=OneWay}"
+                                        TargetType="Label"
+                                        Value="true">
+                                        <Setter Property="Text" Value="Desocupar servidor (Don Satur)" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                        </HorizontalStackLayout>
                     </FlexLayout>
                     <FlexLayout
                         Margin="15,0"
@@ -214,7 +192,7 @@
                                 <Label.FormattedText>
                                     <FormattedString>
                                         <Span Text="Numeros de filas: " />
-                                        <Span Text="{Binding OneClassRecords.Count, Mode=OneWay}" />
+                                        <Span Text="{Binding TwoExerciseRecords.Count, Mode=OneWay}" />
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
@@ -300,7 +278,7 @@
                         RowDefinitions="80, 80">
                         <Label
                             Grid.Row="0"
-                            Grid.ColumnSpan="6"
+                            Grid.ColumnSpan="9"
                             FontAttributes="Italic"
                             FontSize="Header"
                             HorizontalOptions="Center"
@@ -346,7 +324,7 @@
                             VerticalOptions="Fill">
                             <Label
                                 HorizontalOptions="Center"
-                                Text="{Binding LasterRecord.CustomerQueueCount, Mode=OneWay}"
+                                Text="{Binding LasterRecord.ServerAbandonmentTime, Mode=OneWay}"
                                 VerticalOptions="Center" />
                         </Border>
                         <Border
@@ -357,12 +335,45 @@
                             VerticalOptions="Fill">
                             <Label
                                 HorizontalOptions="Center"
-                                Text="{Binding LasterRecord.ServiceStationState, Converter={StaticResource ServiceStationStateBoolToStringConverter}, Mode=OneWay}"
+                                Text="{Binding LasterRecord.ServerReturnTime, Mode=OneWay}"
                                 VerticalOptions="Center" />
                         </Border>
                         <Border
                             Grid.Row="1"
                             Grid.Column="5"
+                            Padding="10"
+                            Stroke="Black"
+                            VerticalOptions="Fill">
+                            <Label
+                                HorizontalOptions="Center"
+                                Text="{Binding LasterRecord.CustomerQueueCount, Mode=OneWay}"
+                                VerticalOptions="Center" />
+                        </Border>
+                        <Border
+                            Grid.Row="1"
+                            Grid.Column="6"
+                            Padding="10"
+                            Stroke="Black"
+                            VerticalOptions="Fill">
+                            <Label
+                                HorizontalOptions="Center"
+                                Text="{Binding LasterRecord.ServiceStationState, Converter={StaticResource ServiceStationStateBoolToStringConverter}, Mode=OneWay}"
+                                VerticalOptions="Center" />
+                        </Border>
+                        <Border
+                            Grid.Row="1"
+                            Grid.Column="7"
+                            Padding="10"
+                            Stroke="Black"
+                            VerticalOptions="Fill">
+                            <Label
+                                HorizontalOptions="Center"
+                                Text="{Binding LasterRecord.ServerState, Converter={StaticResource ServerStateBoolToStringConverter}, Mode=OneWay}"
+                                VerticalOptions="Center" />
+                        </Border>
+                        <Border
+                            Grid.Row="1"
+                            Grid.Column="8"
                             Padding="10"
                             Stroke="Black"
                             VerticalOptions="Fill">
@@ -379,7 +390,7 @@
                                             <AdaptiveTrigger MinWindowWidth="300" />
                                         </VisualState.StateTriggers>
                                         <VisualState.Setters>
-                                            <Setter Property="ColumnDefinitions" Value="80,80,80,80,80,80" />
+                                            <Setter Property="ColumnDefinitions" Value="80,80,80,80,80,80,80,80,80" />
                                         </VisualState.Setters>
                                     </VisualState>
                                     <VisualState x:Name="Greater800">
@@ -387,7 +398,7 @@
                                             <AdaptiveTrigger MinWindowWidth="900" />
                                         </VisualState.StateTriggers>
                                         <VisualState.Setters>
-                                            <Setter Property="ColumnDefinitions" Value="120,120,120,120,120,120" />
+                                            <Setter Property="ColumnDefinitions" Value="120,120,120,120,120,120,120,120,120" />
                                         </VisualState.Setters>
                                     </VisualState>
                                 </VisualStateGroup>
@@ -447,7 +458,7 @@
                                 VerticalOptions="Fill">
                                 <Label
                                     HorizontalOptions="Center"
-                                    Text="Clientes en cola"
+                                    Text="Hora Aband. del Servidor"
                                     VerticalOptions="Center" />
                             </Border>
                             <Border
@@ -457,11 +468,41 @@
                                 VerticalOptions="Fill">
                                 <Label
                                     HorizontalOptions="Center"
-                                    Text="Estado del Puesto de Servicio"
+                                    Text="Hora Regreso del Servidor"
                                     VerticalOptions="Center" />
                             </Border>
                             <Border
                                 Grid.Column="5"
+                                Padding="10"
+                                Stroke="Black"
+                                VerticalOptions="Fill">
+                                <Label
+                                    HorizontalOptions="Center"
+                                    Text="Clientes en cola"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <Border
+                                Grid.Column="6"
+                                Padding="10"
+                                Stroke="Black"
+                                VerticalOptions="Fill">
+                                <Label
+                                    HorizontalOptions="Center"
+                                    Text="Estado del Puesto de Servicio"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <Border
+                                Grid.Column="7"
+                                Padding="10"
+                                Stroke="Black"
+                                VerticalOptions="Fill">
+                                <Label
+                                    HorizontalOptions="Center"
+                                    Text="Estado del Servidor"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <Border
+                                Grid.Column="8"
                                 Padding="10"
                                 Stroke="Black"
                                 VerticalOptions="Fill">
@@ -478,7 +519,7 @@
                                                 <AdaptiveTrigger MinWindowWidth="300" />
                                             </VisualState.StateTriggers>
                                             <VisualState.Setters>
-                                                <Setter Property="ColumnDefinitions" Value="80,80,80,80,80,80" />
+                                                <Setter Property="ColumnDefinitions" Value="80,80,80,80,80,80,80,80,80" />
                                             </VisualState.Setters>
                                         </VisualState>
                                         <VisualState x:Name="Greater800">
@@ -486,16 +527,16 @@
                                                 <AdaptiveTrigger MinWindowWidth="900" />
                                             </VisualState.StateTriggers>
                                             <VisualState.Setters>
-                                                <Setter Property="ColumnDefinitions" Value="120,120,120,120,120,120" />
+                                                <Setter Property="ColumnDefinitions" Value="120,120,120,120,120,120,120,120,120" />
                                             </VisualState.Setters>
                                         </VisualState>
                                     </VisualStateGroup>
                                 </VisualStateGroupList>
                             </VisualStateManager.VisualStateGroups>
                         </Grid>
-                        <CollectionView HorizontalOptions="Fill" ItemsSource="{Binding OneClassRecords, Mode=OneWay}">
+                        <CollectionView HorizontalOptions="Fill" ItemsSource="{Binding TwoExerciseRecords, Mode=OneWay}">
                             <CollectionView.ItemTemplate>
-                                <DataTemplate x:DataType="models:OneClassRecord">
+                                <DataTemplate x:DataType="models:TwoExerciseRecord">
                                     <Grid ColumnSpacing="-1" RowDefinitions="80">
                                         <Border
                                             Grid.Column="0"
@@ -534,7 +575,7 @@
                                             VerticalOptions="Fill">
                                             <Label
                                                 HorizontalOptions="Center"
-                                                Text="{Binding CustomerQueueCount, Mode=OneWay}"
+                                                Text="{Binding ServerAbandonmentTime, Mode=OneWay}"
                                                 VerticalOptions="Center" />
                                         </Border>
                                         <Border
@@ -544,11 +585,41 @@
                                             VerticalOptions="Fill">
                                             <Label
                                                 HorizontalOptions="Center"
-                                                Text="{Binding ServiceStationState, Converter={StaticResource ServiceStationStateBoolToStringConverter}, Mode=OneWay}"
+                                                Text="{Binding ServerReturnTime, Mode=OneWay}"
                                                 VerticalOptions="Center" />
                                         </Border>
                                         <Border
                                             Grid.Column="5"
+                                            Padding="10"
+                                            Stroke="Black"
+                                            VerticalOptions="Fill">
+                                            <Label
+                                                HorizontalOptions="Center"
+                                                Text="{Binding CustomerQueueCount, Mode=OneWay}"
+                                                VerticalOptions="Center" />
+                                        </Border>
+                                        <Border
+                                            Grid.Column="6"
+                                            Padding="10"
+                                            Stroke="Black"
+                                            VerticalOptions="Fill">
+                                            <Label
+                                                HorizontalOptions="Center"
+                                                Text="{Binding ServiceStationState, Converter={StaticResource ServiceStationStateBoolToStringConverter}, Mode=OneWay}"
+                                                VerticalOptions="Center" />
+                                        </Border>
+                                        <Border
+                                            Grid.Column="7"
+                                            Padding="10"
+                                            Stroke="Black"
+                                            VerticalOptions="Fill">
+                                            <Label
+                                                HorizontalOptions="Center"
+                                                Text="{Binding ServerState, Converter={StaticResource ServerStateBoolToStringConverter}, Mode=OneWay}"
+                                                VerticalOptions="Center" />
+                                        </Border>
+                                        <Border
+                                            Grid.Column="8"
                                             Padding="10"
                                             Stroke="Black"
                                             VerticalOptions="Fill">
@@ -565,7 +636,7 @@
                                                             <AdaptiveTrigger MinWindowWidth="300" />
                                                         </VisualState.StateTriggers>
                                                         <VisualState.Setters>
-                                                            <Setter Property="ColumnDefinitions" Value="80,80,80,80,80,80" />
+                                                            <Setter Property="ColumnDefinitions" Value="80,80,80,80,80,80,80,80,80" />
                                                         </VisualState.Setters>
                                                     </VisualState>
                                                     <VisualState x:Name="Greater800">
@@ -573,7 +644,7 @@
                                                             <AdaptiveTrigger MinWindowWidth="900" />
                                                         </VisualState.StateTriggers>
                                                         <VisualState.Setters>
-                                                            <Setter Property="ColumnDefinitions" Value="120,120,120,120,120,120" />
+                                                            <Setter Property="ColumnDefinitions" Value="120,120,120,120,120,120,120,120,120" />
                                                         </VisualState.Setters>
                                                     </VisualState>
                                                 </VisualStateGroup>

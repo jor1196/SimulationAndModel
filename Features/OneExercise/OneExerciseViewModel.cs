@@ -1,16 +1,20 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using SimulationAndModel.Features.OneClass.Models;
+using SimulationAndModel.Common.Extensions;
+using SimulationAndModel.Features.OneExercise.Models;
 using System.Collections.ObjectModel;
 
-namespace SimulationAndModel.Features.OneClass;
+namespace SimulationAndModel.Features.OneExercise;
 
-public partial class OneClassViewModel : ObservableObject
+public partial class OneExerciseViewModel : ObservableObject
 {
     private readonly Random _random = new();
 
     [ObservableProperty]
-    private ObservableCollection<OneClassRecord>? _oneClassRecords;
+    private ObservableCollection<OneExerciseRecord>? _oneExerciseRecords;
+
+    [ObservableProperty]
+    private OneExerciseRecord? _lasterRecord;
 
     [ObservableProperty]
     private TimeSpan _initialTime;
@@ -42,16 +46,12 @@ public partial class OneClassViewModel : ObservableObject
     [ObservableProperty]
     private int? _customerQueueCount = null;
 
-
-    [ObservableProperty]
-    private OneClassRecord? _lasterRecord;
-
     [RelayCommand(FlowExceptionsToTaskScheduler = true)]
     private async Task Calculate(CancellationToken cancellationToken)
     {
         await Shell.Current.DisplayAlert("Advertencia", "Aquellos filtros que no estan configurados se les agregara un valor aleatorio", "Ok");
         
-        OneClassRecords = [];
+        OneExerciseRecords = [];
         LasterRecord = null;
 
         FromCustomerArrivalTime ??= _random.Next(0, 60);
@@ -78,10 +78,10 @@ public partial class OneClassViewModel : ObservableObject
 
         if (InitialTime == default && EndTime == default)
         {
-            InitialTime = GeneratorRandomTimeSpan(8);
+            InitialTime = TimeSpanExtensions.GeneratorRandomTimeSpan(8);
 
             while (InitialTime >= EndTime)
-                EndTime = GeneratorRandomTimeSpan(8);
+                EndTime = TimeSpanExtensions.GeneratorRandomTimeSpan(8);
         }
 
         CustomerQueueCount ??= _random.Next(0, 20);
@@ -89,7 +89,7 @@ public partial class OneClassViewModel : ObservableObject
         var customerNextArrivalSecond = CalculateCustomerNextArrivalTime(InitialTime).Seconds;
         var endNextServiceSecond = customerNextArrivalSecond + CalculateEndNextServiceTime(InitialTime).Seconds;
 
-        OneClassRecord record = new()
+        OneExerciseRecord record = new()
         {
             CurrentTime = InitialTime,
             CustomerNextArrivalTime = new(InitialTime.Hours, InitialTime.Minutes, customerNextArrivalSecond),
@@ -99,7 +99,7 @@ public partial class OneClassViewModel : ObservableObject
             ServiceStationState = ServiceStationState
         };
 
-        OneClassRecords.Add(record);
+        OneExerciseRecords.Add(record);
 
         while (record.CurrentTime <= EndTime)
         {
@@ -135,7 +135,7 @@ public partial class OneClassViewModel : ObservableObject
                 record.NextEndServiceTime = CalculateEndNextServiceTime(record.CurrentTime);
             }
 
-            OneClassRecords.Add(record);
+            OneExerciseRecords.Add(record);
 
             await Task.Delay(5, cancellationToken);
         }
@@ -146,7 +146,7 @@ public partial class OneClassViewModel : ObservableObject
     [RelayCommand]
     private void ClearRecords()
     {
-        OneClassRecords = null;
+        OneExerciseRecords = null;
         InitialTime = default;
         FromCustomerArrivalTime = null;
         ToCustomerArrivalTime = null;
@@ -207,15 +207,8 @@ public partial class OneClassViewModel : ObservableObject
         return new(currentTime.Hours, currentTime.Minutes, currentTime.Seconds + customerNextSecond);
     }
 
-    private TimeSpan GeneratorRandomTimeSpan(int maxHours)
-    {
-        long randomTicks = (long)(_random.NextDouble() * TimeSpan.FromHours(maxHours).Ticks);
-
-        return new TimeSpan(randomTicks);
-    }
-
     private void SetLastRecord()
     {
-        LasterRecord = OneClassRecords?.Last();
+        LasterRecord = OneExerciseRecords?.Last();
     }
 }
