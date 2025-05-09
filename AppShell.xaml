@@ -31,7 +31,7 @@
         Route="FourExercisePage" />
 
     <ShellContent
-        Title="FourExercise"
+        Title="FiveExercise"
         ContentTemplate="{x:DataTemplate fiveExercise:FiveExercisePage}"
         Route="FiveExercisePage" />
 </Shell>
