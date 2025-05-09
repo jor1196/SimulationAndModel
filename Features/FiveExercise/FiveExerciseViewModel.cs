@@ -1,8 +1,7 @@
-﻿using CommunityToolkit.Maui.Converters;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SimulationAndModel.Common.Extensions;
-using SimulationAndModel.Features.ThreeExercise.Models;
+using SimulationAndModel.Features.FiveExercise.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,21 +9,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SimulationAndModel.Features.ThreeExercise;
+namespace SimulationAndModel.Features.FiveExercise;
 
-public partial class ThreeExerciseViewModel : ObservableObject
+public partial class FiveExerciseViewModel : ObservableObject
 {
     private readonly Random _random = new();
-    private readonly IsListNotNullOrEmptyConverter _isListNotNullOrEmptyConverter = new();
 
     [ObservableProperty]
-    private ObservableCollection<ThreeExerciseRecord>? _threeExerciseRecords;
+    private ObservableCollection<FiveExerciseRecord>? _fiveExerciseRecords;
 
     [ObservableProperty]
-    private ThreeExerciseRecord? _lasterRecord;
-
-    [ObservableProperty]
-    private ObservableCollection<TimeSpan>? _customerLeaveQueueTimes;
+    private FiveExerciseRecord? _lasterRecord;
 
     [ObservableProperty]
     private TimeSpan _initialTime;
@@ -39,28 +34,25 @@ public partial class ThreeExerciseViewModel : ObservableObject
     private int? _fromEndServiceTime;
 
     [ObservableProperty]
-    private int? _customerWaitTime;
-
-    //[ObservableProperty]
-    //private int? _customerQueueCount = null;
+    private int? _customerQueueCount = null;
 
     [ObservableProperty]
-    private bool _serviceStationState;
+    private bool _serviceStationState = false;
+
+    [ObservableProperty]
+    private bool _secureZoneState = false;
 
     [RelayCommand(FlowExceptionsToTaskScheduler = true)]
     private async Task Calculate(CancellationToken cancellationToken)
     {
         await Shell.Current.DisplayAlert("Advertencia", "Aquellos filtros que no estan configurados se les agregara un valor aleatorio", "Ok");
 
-        ThreeExerciseRecords = [];
-        CustomerLeaveQueueTimes = [];
-        LasterRecord = null;
+        FiveExerciseRecords = [];
 
         FromCustomerArrivalTime ??= _random.Next(0, 60);
         FromEndServiceTime ??= _random.Next(0, 60);
         FromEndServiceTime ??= _random.Next(0, 60);
-        //CustomerQueueCount ??= _random.Next(0, 20);
-        CustomerWaitTime ??= _random.Next(0, 60);
+        CustomerQueueCount ??= _random.Next(0, 20);
 
         if (InitialTime == default && EndTime == default)
         {
@@ -73,48 +65,38 @@ public partial class ThreeExerciseViewModel : ObservableObject
         var customerNextArrivalTime = InitialTime.SumSeconds(FromCustomerArrivalTime!.Value);
         var nextEndServiceTime = customerNextArrivalTime.SumSeconds(FromEndServiceTime!.Value);
 
-        ThreeExerciseRecord record = new()
+        FiveExerciseRecord record = new()
         {
             CurrentTime = InitialTime,
             CustomerNextArrivalTime = customerNextArrivalTime,
             NextEndServiceTime = nextEndServiceTime,
-            CustomerServedCount = 0,
-            ServiceStationState = ServiceStationState
+            CustomerQueueCount = CustomerQueueCount.Value,
+            ServiceStationState = ServiceStationState,
+            SecureZoneState = SecureZoneState
         };
 
-        ThreeExerciseRecords.Add(record);
+        FiveExerciseRecords.Add(record);
 
         while (record.CurrentTime <= EndTime)
         {
-            if (_isListNotNullOrEmptyConverter.ConvertFrom(record.CustomerQueueTime) &&
-                record.CustomerQueueTime[0] < record.CurrentTime)
-            {
-                CustomerLeaveQueueTimes.Add(record.CustomerQueueTime[0]);
-                record.CustomerQueueTime.RemoveAt(0);
-            }
-
             if (record.CustomerNextArrivalTime <= record.NextEndServiceTime)
             {
                 record.CurrentTime = record.CustomerNextArrivalTime;
 
-                if (!record.ServiceStationState)
+                if (!record.SecureZoneState && !record.ServiceStationState)
                 {
-                    if (record.CustomerQueueCount > 0) {
+                    if (record.CustomerQueueCount > 0)
+                    {
                         record.CustomerQueueCount--;
-                        record.ServiceStationState = true;
 
+                        record.ServiceStationState = true;
+                        record.SecureZoneState = true;
                     }
-                    
-                    if (_isListNotNullOrEmptyConverter.ConvertFrom(record.CustomerQueueTime))
-                        record.CustomerQueueTime.RemoveAt(0);
                 }
                 else
-                {
                     record.CustomerQueueCount++;
-                    record.CustomerQueueTime.Add(record.CurrentTime.SumSeconds(CustomerWaitTime.Value));
-                }
 
-                record.CustomerNextArrivalTime = record.CurrentTime.SumSeconds(FromCustomerArrivalTime!.Value);
+                record.CustomerNextArrivalTime = record.CurrentTime.SumSeconds(FromCustomerArrivalTime.Value);
             }
             else
             {
@@ -127,18 +109,15 @@ public partial class ThreeExerciseViewModel : ObservableObject
                     record.CustomerServedCount++;
                 }
                 else
+                {
                     record.ServiceStationState = false;
+                    record.SecureZoneState = false;
+                }
 
-                //revisar
-                if(_isListNotNullOrEmptyConverter.ConvertFrom(record.CustomerQueueTime))
-                    record.CustomerQueueTime.RemoveAt(0);
-
-                record.NextEndServiceTime = record.CurrentTime.SumSeconds(FromEndServiceTime!.Value);
+                record.NextEndServiceTime = record.CurrentTime.SumSeconds(FromEndServiceTime.Value);
             }
 
-            record.CustomerLeaveQueueTimes = [.. CustomerLeaveQueueTimes];
-
-            ThreeExerciseRecords.Add(record);
+            FiveExerciseRecords.Add(record);
 
             await Task.Delay(5, cancellationToken);
         }
@@ -149,23 +128,22 @@ public partial class ThreeExerciseViewModel : ObservableObject
     [RelayCommand]
     private void ClearRecords()
     {
-        ThreeExerciseRecords = null;
-        CustomerLeaveQueueTimes = null;
-        CustomerWaitTime = null;
+        FiveExerciseRecords = null;
         LasterRecord = null;
         InitialTime = default;
         EndTime = default;
         FromCustomerArrivalTime = null;
         FromEndServiceTime = null;
-        //CustomerQueueCount = null;
+        CustomerQueueCount = null;
         ServiceStationState = false;
+        SecureZoneState = false;
     }
 
     [RelayCommand]
     private void CancelCalculate()
     {
         CalculateCommand.Cancel();
-        LasterRecord = ThreeExerciseRecords!.Last();
+        LasterRecord = FiveExerciseRecords!.Last();
     }
 
     [RelayCommand]

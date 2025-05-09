@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="SimulationAndModel.Features.ThreeExercise.ThreeExercisePage"
+    x:Class="SimulationAndModel.Features.FiveExercise.FiveExercisePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:behaviors="clr-namespace:SimulationAndModel.Common.Behaviors"
@@ -8,11 +8,11 @@
     xmlns:editors="clr-namespace:Syncfusion.Maui.Toolkit.NumericEntry;assembly=Syncfusion.Maui.Toolkit"
     xmlns:effectsView="clr-namespace:Syncfusion.Maui.Toolkit.EffectsView;assembly=Syncfusion.Maui.Toolkit"
     xmlns:inputLayout="clr-namespace:Syncfusion.Maui.Toolkit.TextInputLayout;assembly=Syncfusion.Maui.Toolkit"
-    xmlns:local="clr-namespace:SimulationAndModel.Features.ThreeExercise"
-    xmlns:models="clr-namespace:SimulationAndModel.Features.ThreeExercise.Models"
+    xmlns:local="clr-namespace:SimulationAndModel.Features.FiveExercise"
+    xmlns:models="clr-namespace:SimulationAndModel.Features.FiveExercise.Models"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-    Title="ThreeExercisePage"
-    x:DataType="local:ThreeExerciseViewModel">
+    Title="FiveExercisePage"
+    x:DataType="local:FiveExerciseViewModel">
     <ContentPage.Resources>
         <ResourceDictionary>
             <toolkit:IsNotNullConverter x:Key="IsNotNullConverter" />
@@ -72,18 +72,6 @@
                             Margin="5"
                             HeightRequest="100"
                             HelperText="Ingrese los segundos"
-                            Hint="Tiempo de Espera del Cliente"
-                            MaximumWidthRequest="250">
-                            <editors:SfNumericEntry
-                                AllowNull="True"
-                                CustomFormat="0"
-                                Minimum="1"
-                                Value="{Binding CustomerWaitTime}" />
-                        </inputLayout:SfTextInputLayout>
-                        <inputLayout:SfTextInputLayout
-                            Margin="5"
-                            HeightRequest="100"
-                            HelperText="Ingrese los segundos"
                             Hint="Tiempo de Fin de Servicio"
                             MaximumWidthRequest="250">
                             <editors:SfNumericEntry
@@ -92,7 +80,7 @@
                                 Minimum="1"
                                 Value="{Binding FromEndServiceTime}" />
                         </inputLayout:SfTextInputLayout>
-                        <!--<inputLayout:SfTextInputLayout
+                        <inputLayout:SfTextInputLayout
                             Margin="5"
                             HeightRequest="100"
                             Hint="Cantidad de clientes en cola"
@@ -102,7 +90,7 @@
                                 CustomFormat="0"
                                 Minimum="0"
                                 Value="{Binding CustomerQueueCount, TargetNullValue={x:Null}, FallbackValue={x:Null}}" />
-                        </inputLayout:SfTextInputLayout>-->
+                        </inputLayout:SfTextInputLayout>
                         <HorizontalStackLayout
                             Margin="5,0"
                             HeightRequest="100"
@@ -127,25 +115,6 @@
                         Margin="15,0"
                         JustifyContent="SpaceBetween"
                         Wrap="Wrap">
-                        <Border
-                            Padding="25,0"
-                            BackgroundColor="MediumPurple"
-                            HeightRequest="80">
-                            <Border.StrokeShape>
-                                <RoundRectangle CornerRadius="5,5,5,5" />
-                            </Border.StrokeShape>
-                            <Label
-                                FontSize="Title"
-                                TextColor="White"
-                                VerticalTextAlignment="Center">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span Text="Numeros de filas: " />
-                                        <Span Text="{Binding ThreeExerciseRecords.Count, Mode=OneWay}" />
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
-                        </Border>
                         <BoxView BackgroundColor="Transparent" FlexLayout.Grow="1" />
                         <Button
                             x:Name="CalculateButton"
@@ -219,7 +188,7 @@
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="5,5,5,5" />
                 </Border.StrokeShape>
-                <ScrollView>
+                <ScrollView Orientation="Horizontal">
                     <Grid
                         Margin="0,25,0,0"
                         ColumnSpacing="-1"
@@ -230,7 +199,7 @@
                             Grid.ColumnSpan="9"
                             FontAttributes="Italic"
                             FontSize="Header"
-                            HorizontalOptions="Start"
+                            HorizontalOptions="Center"
                             Text="Vector Final" />
                         <Border
                             Grid.Row="1"
@@ -295,32 +264,20 @@
                             VerticalOptions="Fill">
                             <Label
                                 HorizontalOptions="Center"
+                                Text="{Binding LasterRecord.SecureZoneState, Converter={StaticResource ServiceStationStateBoolToStringConverter}, Mode=OneWay}"
+                                VerticalOptions="Center" />
+                        </Border>
+                        <Border
+                            Grid.Row="1"
+                            Grid.Column="6"
+                            Padding="10"
+                            Stroke="Black"
+                            VerticalOptions="Fill">
+                            <Label
+                                HorizontalOptions="Center"
                                 Text="{Binding LasterRecord.CustomerServedCount, Mode=OneWay}"
                                 VerticalOptions="Center" />
                         </Border>
-                        <FlexLayout
-                            Grid.Row="1"
-                            Grid.Column="6"
-                            BindableLayout.ItemsSource="{Binding CustomerLeaveQueueTimes}"
-                            Direction="Row">
-                            <BindableLayout.ItemTemplate>
-                                <DataTemplate x:DataType="x:TimeSpan">
-                                    <Border
-                                        Padding="10"
-                                        Stroke="Black"
-                                        VerticalOptions="Fill">
-                                        <Label HorizontalOptions="Center" VerticalOptions="Center">
-                                            <Label.FormattedText>
-                                                <FormattedString>
-                                                    <Span Text="Cliente Hora: " />
-                                                    <Span Text="{Binding .}" />
-                                                </FormattedString>
-                                            </Label.FormattedText>
-                                        </Label>
-                                    </Border>
-                                </DataTemplate>
-                            </BindableLayout.ItemTemplate>
-                        </FlexLayout>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroupList>
                                 <VisualStateGroup>
@@ -329,7 +286,7 @@
                                             <AdaptiveTrigger MinWindowWidth="300" />
                                         </VisualState.StateTriggers>
                                         <VisualState.Setters>
-                                            <Setter Property="ColumnDefinitions" Value="80,80,80,80,80,80,*" />
+                                            <Setter Property="ColumnDefinitions" Value="80,80,80,80,80,80,80" />
                                         </VisualState.Setters>
                                     </VisualState>
                                     <VisualState x:Name="Greater800">
@@ -337,7 +294,7 @@
                                             <AdaptiveTrigger MinWindowWidth="900" />
                                         </VisualState.StateTriggers>
                                         <VisualState.Setters>
-                                            <Setter Property="ColumnDefinitions" Value="120,120,120,120,120,120,*" />
+                                            <Setter Property="ColumnDefinitions" Value="120,120,120,120,120,120,120" />
                                         </VisualState.Setters>
                                     </VisualState>
                                 </VisualStateGroup>
@@ -417,7 +374,7 @@
                                 VerticalOptions="Fill">
                                 <Label
                                     HorizontalOptions="Center"
-                                    Text="Clientes atendidos"
+                                    Text="Estado de Zona de Seguridad"
                                     VerticalOptions="Center" />
                             </Border>
                             <Border
@@ -427,7 +384,7 @@
                                 VerticalOptions="Fill">
                                 <Label
                                     HorizontalOptions="Center"
-                                    Text="Horas de abandono de clientes"
+                                    Text="Clientes atendidos"
                                     VerticalOptions="Center" />
                             </Border>
                             <VisualStateManager.VisualStateGroups>
@@ -438,7 +395,7 @@
                                                 <AdaptiveTrigger MinWindowWidth="300" />
                                             </VisualState.StateTriggers>
                                             <VisualState.Setters>
-                                                <Setter Property="ColumnDefinitions" Value="80,80,80,80,80,80,*" />
+                                                <Setter Property="ColumnDefinitions" Value="80,80,80,80,80,80,80" />
                                             </VisualState.Setters>
                                         </VisualState>
                                         <VisualState x:Name="Greater800">
@@ -446,16 +403,16 @@
                                                 <AdaptiveTrigger MinWindowWidth="900" />
                                             </VisualState.StateTriggers>
                                             <VisualState.Setters>
-                                                <Setter Property="ColumnDefinitions" Value="120,120,120,120,120,120,*" />
+                                                <Setter Property="ColumnDefinitions" Value="120,120,120,120,120,120,120" />
                                             </VisualState.Setters>
                                         </VisualState>
                                     </VisualStateGroup>
                                 </VisualStateGroupList>
                             </VisualStateManager.VisualStateGroups>
                         </Grid>
-                        <CollectionView HorizontalOptions="Fill" ItemsSource="{Binding ThreeExerciseRecords, Mode=OneWay}">
+                        <CollectionView HorizontalOptions="Fill" ItemsSource="{Binding FiveExerciseRecords, Mode=OneWay}">
                             <CollectionView.ItemTemplate>
-                                <DataTemplate x:DataType="models:ThreeExerciseRecord">
+                                <DataTemplate x:DataType="models:FiveExerciseRecord">
                                     <Grid ColumnSpacing="-1" RowDefinitions="80">
                                         <Border
                                             Grid.Column="0"
@@ -514,34 +471,19 @@
                                             VerticalOptions="Fill">
                                             <Label
                                                 HorizontalOptions="Center"
+                                                Text="{Binding SecureZoneState, Converter={StaticResource ServiceStationStateBoolToStringConverter}, Mode=OneWay}"
+                                                VerticalOptions="Center" />
+                                        </Border>
+                                        <Border
+                                            Grid.Column="6"
+                                            Padding="10"
+                                            Stroke="Black"
+                                            VerticalOptions="Fill">
+                                            <Label
+                                                HorizontalOptions="Center"
                                                 Text="{Binding CustomerServedCount, Mode=OneWay}"
                                                 VerticalOptions="Center" />
                                         </Border>
-                                        <FlexLayout
-                                            Grid.Column="6"
-                                            BindableLayout.ItemsSource="{Binding CustomerLeaveQueueTimes}"
-                                            Direction="Row"
-                                            HorizontalOptions="Fill"
-                                            VerticalOptions="Fill">
-                                            <BindableLayout.ItemTemplate>
-                                                <DataTemplate x:DataType="x:TimeSpan">
-                                                    <Border
-                                                        Padding="10"
-                                                        Stroke="Black"
-                                                        VerticalOptions="Fill">
-                                                        <Label HorizontalOptions="Center" VerticalOptions="Center">
-                                                            <Label.FormattedText>
-                                                                <FormattedString>
-                                                                    <Span Text="Cliente Hora" />
-                                                                    <Span Text="{Binding .}" />
-                                                                    <Span Text="   " />
-                                                                </FormattedString>
-                                                            </Label.FormattedText>
-                                                        </Label>
-                                                    </Border>
-                                                </DataTemplate>
-                                            </BindableLayout.ItemTemplate>
-                                        </FlexLayout>
                                         <VisualStateManager.VisualStateGroups>
                                             <VisualStateGroupList>
                                                 <VisualStateGroup>
@@ -550,7 +492,7 @@
                                                             <AdaptiveTrigger MinWindowWidth="300" />
                                                         </VisualState.StateTriggers>
                                                         <VisualState.Setters>
-                                                            <Setter Property="ColumnDefinitions" Value="80,80,80,80,80,80,*" />
+                                                            <Setter Property="ColumnDefinitions" Value="80,80,80,80,80,80,80" />
                                                         </VisualState.Setters>
                                                     </VisualState>
                                                     <VisualState x:Name="Greater800">
@@ -558,7 +500,7 @@
                                                             <AdaptiveTrigger MinWindowWidth="900" />
                                                         </VisualState.StateTriggers>
                                                         <VisualState.Setters>
-                                                            <Setter Property="ColumnDefinitions" Value="120,120,120,120,120,120,*" />
+                                                            <Setter Property="ColumnDefinitions" Value="120,120,120,120,120,120,120" />
                                                         </VisualState.Setters>
                                                     </VisualState>
                                                 </VisualStateGroup>
