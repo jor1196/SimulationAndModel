@@ -219,7 +219,7 @@
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="5,5,5,5" />
                 </Border.StrokeShape>
-                <ScrollView>
+                <ScrollView Orientation="Horizontal">
                     <Grid
                         Margin="0,25,0,0"
                         ColumnSpacing="-1"
