@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using SimulationAndModel.Common.Extensions;
 using SimulationAndModel.Features.OneExercise.Models;
 using System.Collections.ObjectModel;
 
@@ -77,10 +78,10 @@ public partial class OneExerciseViewModel : ObservableObject
 
         if (InitialTime == default && EndTime == default)
         {
-            InitialTime = GeneratorRandomTimeSpan(8);
+            InitialTime = TimeSpanExtensions.GeneratorRandomTimeSpan(8);
 
             while (InitialTime >= EndTime)
-                EndTime = GeneratorRandomTimeSpan(8);
+                EndTime = TimeSpanExtensions.GeneratorRandomTimeSpan(8);
         }
 
         CustomerQueueCount ??= _random.Next(0, 20);
@@ -204,13 +205,6 @@ public partial class OneExerciseViewModel : ObservableObject
             customerNextSecond = FromEndServiceTime!.Value;
 
         return new(currentTime.Hours, currentTime.Minutes, currentTime.Seconds + customerNextSecond);
-    }
-
-    private TimeSpan GeneratorRandomTimeSpan(int maxHours)
-    {
-        long randomTicks = (long)(_random.NextDouble() * TimeSpan.FromHours(maxHours).Ticks);
-
-        return new TimeSpan(randomTicks);
     }
 
     private void SetLastRecord()

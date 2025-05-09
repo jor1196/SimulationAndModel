@@ -18,6 +18,7 @@
             <toolkit:IsNotNullConverter x:Key="IsNotNullConverter" />
             <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
             <converters:ServiceStationStateBoolToStringConverter x:Key="ServiceStationStateBoolToStringConverter" />
+            <converters:ServerStateBoolToStringConverter x:Key="ServerStateBoolToStringConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <ScrollView Padding="50,30,50,50" Background="Pink">
@@ -54,6 +55,74 @@
                                 Format="HH:mm"
                                 TextColor="Black"
                                 Time="{Binding EndTime}" />
+                        </inputLayout:SfTextInputLayout>
+                        <inputLayout:SfTextInputLayout
+                            Margin="5"
+                            HeightRequest="100"
+                            Hint="Hora de Abandono del Servidor"
+                            WidthRequest="250">
+                            <TimePicker
+                                Format="HH:mm"
+                                TextColor="Black"
+                                Time="{Binding ServerAbandonmentTime}" />
+                        </inputLayout:SfTextInputLayout>
+                        <inputLayout:SfTextInputLayout
+                            Margin="5"
+                            HeightRequest="100"
+                            Hint="Hora de Regreso del Servidor"
+                            WidthRequest="250">
+                            <TimePicker
+                                Format="HH:mm"
+                                TextColor="Black"
+                                Time="{Binding ServerReturnTime}" />
+                        </inputLayout:SfTextInputLayout>
+                        <inputLayout:SfTextInputLayout
+                            Margin="5"
+                            HeightRequest="100"
+                            HelperText="Ingrese los segundos"
+                            Hint="Tiempo de Llegada del Cliente"
+                            MaximumWidthRequest="250">
+                            <editors:SfNumericEntry
+                                AllowNull="True"
+                                CustomFormat="0"
+                                Minimum="1"
+                                Value="{Binding FromCustomerArrivalTime}" />
+                        </inputLayout:SfTextInputLayout>
+                        <inputLayout:SfTextInputLayout
+                            Margin="5"
+                            HeightRequest="100"
+                            HelperText="Ingrese los segundos"
+                            Hint="Tiempo de Fin de Servicio"
+                            MaximumWidthRequest="250">
+                            <editors:SfNumericEntry
+                                AllowNull="True"
+                                CustomFormat="0"
+                                Minimum="1"
+                                Value="{Binding FromEndServiceTime}" />
+                        </inputLayout:SfTextInputLayout>
+                        <inputLayout:SfTextInputLayout
+                            Margin="5"
+                            HeightRequest="100"
+                            HelperText="Ingrese los segundos"
+                            Hint="Tiempo de Abandono del Servidor"
+                            MaximumWidthRequest="250">
+                            <editors:SfNumericEntry
+                                AllowNull="True"
+                                CustomFormat="0"
+                                Minimum="1"
+                                Value="{Binding FromServerAbandonmentTime}" />
+                        </inputLayout:SfTextInputLayout>
+                        <inputLayout:SfTextInputLayout
+                            Margin="5"
+                            HeightRequest="100"
+                            HelperText="Ingrese los segundos"
+                            Hint="Tiempo de Regreso del Servidor"
+                            MaximumWidthRequest="250">
+                            <editors:SfNumericEntry
+                                AllowNull="True"
+                                CustomFormat="0"
+                                Minimum="1"
+                                Value="{Binding FromServerReturnTime}" />
                         </inputLayout:SfTextInputLayout>
                         <inputLayout:SfTextInputLayout
                             Margin="5"
@@ -209,7 +278,7 @@
                         RowDefinitions="80, 80">
                         <Label
                             Grid.Row="0"
-                            Grid.ColumnSpan="6"
+                            Grid.ColumnSpan="9"
                             FontAttributes="Italic"
                             FontSize="Header"
                             HorizontalOptions="Center"
@@ -299,7 +368,7 @@
                             VerticalOptions="Fill">
                             <Label
                                 HorizontalOptions="Center"
-                                Text="{Binding LasterRecord.ServerState, Converter={StaticResource ServiceStationStateBoolToStringConverter}, Mode=OneWay}"
+                                Text="{Binding LasterRecord.ServerState, Converter={StaticResource ServerStateBoolToStringConverter}, Mode=OneWay}"
                                 VerticalOptions="Center" />
                         </Border>
                         <Border
@@ -546,7 +615,7 @@
                                             VerticalOptions="Fill">
                                             <Label
                                                 HorizontalOptions="Center"
-                                                Text="{Binding ServerState, Converter={StaticResource ServiceStationStateBoolToStringConverter}, Mode=OneWay}"
+                                                Text="{Binding ServerState, Converter={StaticResource ServerStateBoolToStringConverter}, Mode=OneWay}"
                                                 VerticalOptions="Center" />
                                         </Border>
                                         <Border

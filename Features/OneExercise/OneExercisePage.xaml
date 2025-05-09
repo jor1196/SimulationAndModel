@@ -266,6 +266,7 @@
                             Command="{Binding ClearRecordsCommand}"
                             CornerRadius="40"
                             HeightRequest="80"
+                            IsEnabled="{Binding CalculateCommand.IsRunning, Converter={StaticResource InvertedBoolConverter}, Mode=OneWay}"
                             Text="Limpiar"
                             WidthRequest="80">
                             <Button.Behaviors>
