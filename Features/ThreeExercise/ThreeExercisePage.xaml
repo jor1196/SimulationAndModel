@@ -304,10 +304,24 @@
                             Padding="10"
                             Stroke="Black"
                             VerticalOptions="Fill">
-                            <Label
-                                HorizontalOptions="Center"
-                                Text="{Binding CustomerLeaveQueueTimes.Count, Mode=OneWay}"
-                                VerticalOptions="Center" />
+                            <FlexLayout
+                                BindableLayout.ItemsSource="{Binding CustomerLeaveQueueTimes}"
+                                Direction="Row"
+                                Wrap="Wrap">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="x:TimeSpan">
+                                        <Label HorizontalOptions="Center" VerticalOptions="Center">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="Cliente Hora" />
+                                                    <Span Text="{Binding .}" />
+                                                    <Span Text="   " />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </FlexLayout>
                         </Border>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroupList>
@@ -510,10 +524,24 @@
                                             Padding="10"
                                             Stroke="Black"
                                             VerticalOptions="Fill">
-                                            <Label
-                                                HorizontalOptions="Center"
-                                                Text="{Binding CustomerLeaveQueueTimes.Count, Mode=OneWay}"
-                                                VerticalOptions="Center" />
+                                            <FlexLayout
+                                                BindableLayout.ItemsSource="{Binding CustomerLeaveQueueTimes}"
+                                                Direction="Row"
+                                                Wrap="Wrap">
+                                                <BindableLayout.ItemTemplate>
+                                                    <DataTemplate x:DataType="x:TimeSpan">
+                                                        <Label HorizontalOptions="Center" VerticalOptions="Center">
+                                                            <Label.FormattedText>
+                                                                <FormattedString>
+                                                                    <Span Text="Cliente Hora" />
+                                                                    <Span Text="{Binding .}" />
+                                                                    <Span Text="   " />
+                                                                </FormattedString>
+                                                            </Label.FormattedText>
+                                                        </Label>
+                                                    </DataTemplate>
+                                                </BindableLayout.ItemTemplate>
+                                            </FlexLayout>
                                         </Border>
                                         <VisualStateManager.VisualStateGroups>
                                             <VisualStateGroupList>

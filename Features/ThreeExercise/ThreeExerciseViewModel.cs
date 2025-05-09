@@ -98,8 +98,13 @@ public partial class ThreeExerciseViewModel : ObservableObject
 
                 if (!record.ServiceStationState)
                 {
-                    if (record.CustomerQueueCount > 0)
+                    if (record.CustomerQueueCount > 0) {
                         record.CustomerQueueCount--;
+                    }
+
+
+                    if (_isListNotNullOrEmptyConverter.ConvertFrom(record.CustomerQueueTime))
+                        record.CustomerQueueTime.RemoveAt(0);
 
                     record.ServiceStationState = true;
                 }
@@ -124,7 +129,8 @@ public partial class ThreeExerciseViewModel : ObservableObject
                 else
                     record.ServiceStationState = false;
 
-                if (_isListNotNullOrEmptyConverter.ConvertFrom(record.CustomerQueueTime))
+                //revisar
+                if(_isListNotNullOrEmptyConverter.ConvertFrom(record.CustomerQueueTime))
                     record.CustomerQueueTime.RemoveAt(0);
 
                 record.NextEndServiceTime = record.CurrentTime.SumSeconds(FromEndServiceTime!.Value);
