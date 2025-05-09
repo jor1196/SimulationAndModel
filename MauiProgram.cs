@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Platform;
+using SimulationAndModel.Features.FourExercise;
 using SimulationAndModel.Features.OneExercise;
 using SimulationAndModel.Features.ThreeExercise;
 using SimulationAndModel.Features.TwoExercise;
@@ -17,7 +18,7 @@ public static class MauiProgram
 			.UseMauiApp<App>()
 			.UseMauiCommunityToolkit()
 			.ConfigureSyncfusionToolkit()
-            .ConfigureFonts(fonts =>
+			.ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
@@ -26,6 +27,7 @@ public static class MauiProgram
 		builder.Services.AddTransient<OneExerciseViewModel>();
 		builder.Services.AddTransient<TwoExerciseViewModel>();
 		builder.Services.AddTransient<ThreeExerciseViewModel>();
+		builder.Services.AddTransient<FourExerciseViewModel>();
 
 #if DEBUG
         builder.Logging.AddDebug();
