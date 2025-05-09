@@ -4,6 +4,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:oneExercise="clr-namespace:SimulationAndModel.Features.OneExercise"
+    xmlns:threeExercise="clr-namespace:SimulationAndModel.Features.ThreeExercise"
     xmlns:twoExercise="clr-namespace:SimulationAndModel.Features.TwoExercise"
     Title="SimulationAndModel">
 
@@ -16,4 +17,9 @@
         Title="TwoExercise"
         ContentTemplate="{x:DataTemplate twoExercise:TwoExercisePage}"
         Route="TwoExercisePage" />
+
+    <ShellContent
+        Title="ThreeExercise"
+        ContentTemplate="{x:DataTemplate threeExercise:ThreeExercisePage}"
+        Route="ThreeExercisePage" />
 </Shell>

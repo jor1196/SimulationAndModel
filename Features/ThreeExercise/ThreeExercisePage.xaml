@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="SimulationAndModel.Features.ThreeExercise.ThreeExercisePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:behaviors="clr-namespace:SimulationAndModel.Common.Behaviors"
+    xmlns:converters="clr-namespace:SimulationAndModel.Common.Converters"
+    xmlns:editors="clr-namespace:Syncfusion.Maui.Toolkit.NumericEntry;assembly=Syncfusion.Maui.Toolkit"
+    xmlns:effectsView="clr-namespace:Syncfusion.Maui.Toolkit.EffectsView;assembly=Syncfusion.Maui.Toolkit"
+    xmlns:inputLayout="clr-namespace:Syncfusion.Maui.Toolkit.TextInputLayout;assembly=Syncfusion.Maui.Toolkit"
+    xmlns:local="clr-namespace:SimulationAndModel.Features.ThreeExercise"
+    xmlns:models="clr-namespace:SimulationAndModel.Features.ThreeExercise.Models"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    Title="ThreeExercisePage"
+    x:DataType="local:ThreeExerciseViewModel">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:IsNotNullConverter x:Key="IsNotNullConverter" />
+            <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+            <converters:ServiceStationStateBoolToStringConverter x:Key="ServiceStationStateBoolToStringConverter" />
+            <converters:ServerStateBoolToStringConverter x:Key="ServerStateBoolToStringConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ScrollView Padding="50,30,50,50" Background="Pink">
+        <Grid RowDefinitions="*, *, *" RowSpacing="30">
+            <Border
+                Grid.Row="0"
+                Padding="50,20"
+                BackgroundColor="#F2F2F2"
+                HorizontalOptions="Center"
+                Stroke="Gray"
+                StrokeThickness="0.1"
+                VerticalOptions="Start">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="5,5,5,5" />
+                </Border.StrokeShape>
+                <VerticalStackLayout>
+                    <FlexLayout Wrap="Wrap">
+                        <inputLayout:SfTextInputLayout
+                            Margin="5"
+                            HeightRequest="100"
+                            Hint="Hora de Inicio"
+                            WidthRequest="250">
+                            <TimePicker
+                                Format="HH:mm"
+                                TextColor="Black"
+                                Time="{Binding InitialTime}" />
+                        </inputLayout:SfTextInputLayout>
+                        <inputLayout:SfTextInputLayout
+                            Margin="5"
+                            HeightRequest="100"
+                            Hint="Hora Final"
+                            WidthRequest="250">
+                            <TimePicker
+                                Format="HH:mm"
+                                TextColor="Black"
+                                Time="{Binding EndTime}" />
+                        </inputLayout:SfTextInputLayout>
+                        <inputLayout:SfTextInputLayout
+                            Margin="5"
+                            HeightRequest="100"
+                            HelperText="Ingrese los segundos"
+                            Hint="Tiempo de Llegada del Cliente"
+                            MaximumWidthRequest="250">
+                            <editors:SfNumericEntry
+                                AllowNull="True"
+                                CustomFormat="0"
+                                Minimum="1"
+                                Value="{Binding FromCustomerArrivalTime}" />
+                        </inputLayout:SfTextInputLayout>
+                        <inputLayout:SfTextInputLayout
+                            Margin="5"
+                            HeightRequest="100"
+                            HelperText="Ingrese los segundos"
+                            Hint="Tiempo de Espera del Cliente"
+                            MaximumWidthRequest="250">
+                            <editors:SfNumericEntry
+                                AllowNull="True"
+                                CustomFormat="0"
+                                Minimum="1"
+                                Value="{Binding CustomerWaitTime}" />
+                        </inputLayout:SfTextInputLayout>
+                        <inputLayout:SfTextInputLayout
+                            Margin="5"
+                            HeightRequest="100"
+                            HelperText="Ingrese los segundos"
+                            Hint="Tiempo de Fin de Servicio"
+                            MaximumWidthRequest="250">
+                            <editors:SfNumericEntry
+                                AllowNull="True"
+                                CustomFormat="0"
+                                Minimum="1"
+                                Value="{Binding FromEndServiceTime}" />
+                        </inputLayout:SfTextInputLayout>
+                        <inputLayout:SfTextInputLayout
+                            Margin="5"
+                            HeightRequest="100"
+                            Hint="Cantidad de clientes en cola"
+                            MaximumWidthRequest="250">
+                            <editors:SfNumericEntry
+                                AllowNull="True"
+                                CustomFormat="0"
+                                Minimum="0"
+                                Value="{Binding CustomerQueueCount, TargetNullValue={x:Null}, FallbackValue={x:Null}}" />
+                        </inputLayout:SfTextInputLayout>
+                        <HorizontalStackLayout
+                            Margin="5,0"
+                            HeightRequest="100"
+                            VerticalOptions="Center">
+                            <HorizontalStackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ServiceStationStateCheckingCommand}" />
+                            </HorizontalStackLayout.GestureRecognizers>
+                            <CheckBox IsChecked="{Binding ServiceStationState}" VerticalOptions="Center" />
+                            <Label Text="Ocupar puesto de servicio" VerticalOptions="Center">
+                                <Label.Triggers>
+                                    <DataTrigger
+                                        Binding="{Binding ServiceStationState, Mode=OneWay}"
+                                        TargetType="Label"
+                                        Value="true">
+                                        <Setter Property="Text" Value="Desocupar puesto de servicio" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                        </HorizontalStackLayout>
+                    </FlexLayout>
+                    <FlexLayout
+                        Margin="15,0"
+                        JustifyContent="SpaceBetween"
+                        Wrap="Wrap">
+                        <Border
+                            Padding="25,0"
+                            BackgroundColor="MediumPurple"
+                            HeightRequest="80">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="5,5,5,5" />
+                            </Border.StrokeShape>
+                            <Label
+                                FontSize="Title"
+                                TextColor="White"
+                                VerticalTextAlignment="Center">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Numeros de filas: " />
+                                        <Span Text="{Binding ThreeExerciseRecords.Count, Mode=OneWay}" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </Border>
+                        <BoxView BackgroundColor="Transparent" FlexLayout.Grow="1" />
+                        <Button
+                            x:Name="CalculateButton"
+                            Margin="5,5,5,0"
+                            Command="{Binding CalculateCommand}"
+                            CornerRadius="40"
+                            HeightRequest="80"
+                            IsVisible="{Binding CalculateCommand.IsRunning, Converter={StaticResource InvertedBoolConverter}, Mode=OneWay}"
+                            Text="Calcular"
+                            WidthRequest="80">
+                            <Button.Behaviors>
+                                <toolkit:TouchBehavior
+                                    BindingContext="{Binding BindingContext, Source={x:Reference CalculateButton}, x:DataType=Button}"
+                                    DefaultAnimationDuration="750"
+                                    DefaultAnimationEasing="{x:Static Easing.CubicInOut}"
+                                    HoveredBackgroundColor="BlueViolet"
+                                    HoveredScale="1.1" />
+                            </Button.Behaviors>
+                        </Button>
+                        <Button
+                            x:Name="CancelButton"
+                            Margin="5,5,5,0"
+                            Padding="0"
+                            BackgroundColor="Yellow"
+                            Command="{Binding CancelCalculateCommand}"
+                            CornerRadius="40"
+                            HeightRequest="80"
+                            IsVisible="{Binding CalculateCommand.IsRunning, Mode=OneWay}"
+                            Text="Cancelar"
+                            TextColor="Black"
+                            WidthRequest="80">
+                            <Button.Behaviors>
+                                <toolkit:TouchBehavior
+                                    BindingContext="{Binding BindingContext, Source={x:Reference CancelButton}, x:DataType=Button}"
+                                    DefaultAnimationDuration="750"
+                                    DefaultAnimationEasing="{x:Static Easing.CubicInOut}"
+                                    HoveredBackgroundColor="BlueViolet"
+                                    HoveredScale="1.1" />
+                            </Button.Behaviors>
+                        </Button>
+                        <Button
+                            x:Name="ClearButton"
+                            Margin="5,5,5,0"
+                            BackgroundColor="Red"
+                            Command="{Binding ClearRecordsCommand}"
+                            CornerRadius="40"
+                            HeightRequest="80"
+                            Text="Limpiar"
+                            WidthRequest="80">
+                            <Button.Behaviors>
+                                <toolkit:TouchBehavior
+                                    BindingContext="{Binding BindingContext, Source={x:Reference ClearButton}, x:DataType=Button}"
+                                    DefaultAnimationDuration="750"
+                                    DefaultAnimationEasing="{x:Static Easing.CubicInOut}"
+                                    HoveredBackgroundColor="LightGreen"
+                                    HoveredScale="1.1" />
+                            </Button.Behaviors>
+                        </Button>
+                    </FlexLayout>
+                </VerticalStackLayout>
+            </Border>
+            <Border
+                Grid.Row="1"
+                Padding="50,20"
+                BackgroundColor="#F2F2F2"
+                HorizontalOptions="Center"
+                IsVisible="{Binding LasterRecord, Converter={StaticResource IsNotNullConverter}, Mode=OneWay}"
+                Stroke="Gray"
+                StrokeThickness="0.1"
+                VerticalOptions="Start">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="5,5,5,5" />
+                </Border.StrokeShape>
+                <ScrollView Orientation="Horizontal">
+                    <Grid
+                        Margin="0,25,0,0"
+                        ColumnSpacing="-1"
+                        HorizontalOptions="Center"
+                        RowDefinitions="80, 80">
+                        <Label
+                            Grid.Row="0"
+                            Grid.ColumnSpan="9"
+                            FontAttributes="Italic"
+                            FontSize="Header"
+                            HorizontalOptions="Center"
+                            Text="Vector Final" />
+                        <Border
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Padding="10"
+                            Stroke="Black"
+                            VerticalOptions="Fill">
+                            <Label
+                                HorizontalOptions="Center"
+                                Text="{Binding LasterRecord.CurrentTime, Mode=OneWay}"
+                                VerticalOptions="Center" />
+                        </Border>
+                        <Border
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Padding="10"
+                            Stroke="Black"
+                            VerticalOptions="Fill">
+                            <Label
+                                HorizontalOptions="Center"
+                                Text="{Binding LasterRecord.CustomerNextArrivalTime, Mode=OneWay}"
+                                VerticalOptions="Center" />
+                        </Border>
+                        <Border
+                            Grid.Row="1"
+                            Grid.Column="2"
+                            Padding="10"
+                            Stroke="Black"
+                            VerticalOptions="Fill">
+                            <Label
+                                HorizontalOptions="Center"
+                                Text="{Binding LasterRecord.NextEndServiceTime, Mode=OneWay}"
+                                VerticalOptions="Center" />
+                        </Border>
+                        <Border
+                            Grid.Row="1"
+                            Grid.Column="3"
+                            Padding="10"
+                            Stroke="Black"
+                            VerticalOptions="Fill">
+                            <Label
+                                HorizontalOptions="Center"
+                                Text="{Binding LasterRecord.CustomerQueueCount, Mode=OneWay}"
+                                VerticalOptions="Center" />
+                        </Border>
+                        <Border
+                            Grid.Row="1"
+                            Grid.Column="4"
+                            Padding="10"
+                            Stroke="Black"
+                            VerticalOptions="Fill">
+                            <Label
+                                HorizontalOptions="Center"
+                                Text="{Binding LasterRecord.ServiceStationState, Converter={StaticResource ServiceStationStateBoolToStringConverter}, Mode=OneWay}"
+                                VerticalOptions="Center" />
+                        </Border>
+                        <Border
+                            Grid.Row="1"
+                            Grid.Column="5"
+                            Padding="10"
+                            Stroke="Black"
+                            VerticalOptions="Fill">
+                            <Label
+                                HorizontalOptions="Center"
+                                Text="{Binding LasterRecord.CustomerServedCount, Mode=OneWay}"
+                                VerticalOptions="Center" />
+                        </Border>
+                        <Border
+                            Grid.Row="1"
+                            Grid.Column="6"
+                            Padding="10"
+                            Stroke="Black"
+                            VerticalOptions="Fill">
+                            <Label
+                                HorizontalOptions="Center"
+                                Text="{Binding CustomerLeaveQueueTimes.Count, Mode=OneWay}"
+                                VerticalOptions="Center" />
+                        </Border>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroupList>
+                                <VisualStateGroup>
+                                    <VisualState x:Name="Greater300">
+                                        <VisualState.StateTriggers>
+                                            <AdaptiveTrigger MinWindowWidth="300" />
+                                        </VisualState.StateTriggers>
+                                        <VisualState.Setters>
+                                            <Setter Property="ColumnDefinitions" Value="80,80,80,80,80,80,*" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="Greater800">
+                                        <VisualState.StateTriggers>
+                                            <AdaptiveTrigger MinWindowWidth="900" />
+                                        </VisualState.StateTriggers>
+                                        <VisualState.Setters>
+                                            <Setter Property="ColumnDefinitions" Value="120,120,120,120,120,120,*" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateGroupList>
+                        </VisualStateManager.VisualStateGroups>
+                    </Grid>
+                </ScrollView>
+            </Border>
+            <Border
+                Grid.Row="2"
+                Padding="50,20"
+                BackgroundColor="#F2F2F2"
+                HorizontalOptions="Center"
+                Stroke="Gray"
+                StrokeThickness="0.1"
+                VerticalOptions="Start">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="5,5,5,5" />
+                </Border.StrokeShape>
+                <ScrollView Orientation="Horizontal">
+                    <VerticalStackLayout>
+                        <Grid ColumnSpacing="-1" RowDefinitions="80">
+                            <Border
+                                Grid.Column="0"
+                                Padding="10"
+                                Stroke="Black"
+                                VerticalOptions="Fill">
+                                <Label
+                                    HorizontalOptions="Center"
+                                    Text="Hora Actual"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <Border
+                                Grid.Column="1"
+                                Padding="10"
+                                Stroke="Black"
+                                VerticalOptions="Fill">
+                                <Label
+                                    HorizontalOptions="Center"
+                                    Text="Hora prox. llegada de cliente"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <Border
+                                Grid.Column="2"
+                                Padding="10"
+                                Stroke="Black"
+                                VerticalOptions="Fill">
+                                <Label
+                                    HorizontalOptions="Center"
+                                    Text="Hora Prox. Fin de Servicio"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <Border
+                                Grid.Column="3"
+                                Padding="10"
+                                Stroke="Black"
+                                VerticalOptions="Fill">
+                                <Label
+                                    HorizontalOptions="Center"
+                                    Text="Clientes en cola"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <Border
+                                Grid.Column="4"
+                                Padding="10"
+                                Stroke="Black"
+                                VerticalOptions="Fill">
+                                <Label
+                                    HorizontalOptions="Center"
+                                    Text="Estado del Puesto de Servicio"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <Border
+                                Grid.Column="5"
+                                Padding="10"
+                                Stroke="Black"
+                                VerticalOptions="Fill">
+                                <Label
+                                    HorizontalOptions="Center"
+                                    Text="Clientes atendidos"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <Border
+                                Grid.Column="6"
+                                Padding="10"
+                                Stroke="Black"
+                                VerticalOptions="Fill">
+                                <Label
+                                    HorizontalOptions="Center"
+                                    Text="Horas de abandono de clientes"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroupList>
+                                    <VisualStateGroup>
+                                        <VisualState x:Name="Greater300">
+                                            <VisualState.StateTriggers>
+                                                <AdaptiveTrigger MinWindowWidth="300" />
+                                            </VisualState.StateTriggers>
+                                            <VisualState.Setters>
+                                                <Setter Property="ColumnDefinitions" Value="80,80,80,80,80,80,*" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                        <VisualState x:Name="Greater800">
+                                            <VisualState.StateTriggers>
+                                                <AdaptiveTrigger MinWindowWidth="900" />
+                                            </VisualState.StateTriggers>
+                                            <VisualState.Setters>
+                                                <Setter Property="ColumnDefinitions" Value="120,120,120,120,120,120,*" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateGroupList>
+                            </VisualStateManager.VisualStateGroups>
+                        </Grid>
+                        <CollectionView HorizontalOptions="Fill" ItemsSource="{Binding ThreeExerciseRecords, Mode=OneWay}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="models:ThreeExerciseRecord">
+                                    <Grid ColumnSpacing="-1" RowDefinitions="80">
+                                        <Border
+                                            Grid.Column="0"
+                                            Padding="10"
+                                            Stroke="Black"
+                                            VerticalOptions="Fill">
+                                            <Label
+                                                HorizontalOptions="Center"
+                                                Text="{Binding CurrentTime, Mode=OneWay}"
+                                                VerticalOptions="Center" />
+                                        </Border>
+                                        <Border
+                                            Grid.Column="1"
+                                            Padding="10"
+                                            Stroke="Black"
+                                            VerticalOptions="Fill">
+                                            <Label
+                                                HorizontalOptions="Center"
+                                                Text="{Binding CustomerNextArrivalTime, Mode=OneWay}"
+                                                VerticalOptions="Center" />
+                                        </Border>
+                                        <Border
+                                            Grid.Column="2"
+                                            Padding="10"
+                                            Stroke="Black"
+                                            VerticalOptions="Fill">
+                                            <Label
+                                                HorizontalOptions="Center"
+                                                Text="{Binding NextEndServiceTime, Mode=OneWay}"
+                                                VerticalOptions="Center" />
+                                        </Border>
+                                        <Border
+                                            Grid.Column="3"
+                                            Padding="10"
+                                            Stroke="Black"
+                                            VerticalOptions="Fill">
+                                            <Label
+                                                HorizontalOptions="Center"
+                                                Text="{Binding CustomerQueueCount, Mode=OneWay}"
+                                                VerticalOptions="Center" />
+                                        </Border>
+                                        <Border
+                                            Grid.Column="4"
+                                            Padding="10"
+                                            Stroke="Black"
+                                            VerticalOptions="Fill">
+                                            <Label
+                                                HorizontalOptions="Center"
+                                                Text="{Binding ServiceStationState, Converter={StaticResource ServiceStationStateBoolToStringConverter}, Mode=OneWay}"
+                                                VerticalOptions="Center" />
+                                        </Border>
+                                        <Border
+                                            Grid.Column="5"
+                                            Padding="10"
+                                            Stroke="Black"
+                                            VerticalOptions="Fill">
+                                            <Label
+                                                HorizontalOptions="Center"
+                                                Text="{Binding CustomerServedCount, Mode=OneWay}"
+                                                VerticalOptions="Center" />
+                                        </Border>
+                                        <Border
+                                            Grid.Column="6"
+                                            Padding="10"
+                                            Stroke="Black"
+                                            VerticalOptions="Fill">
+                                            <Label
+                                                HorizontalOptions="Center"
+                                                Text="{Binding CustomerLeaveQueueTimes.Count, Mode=OneWay}"
+                                                VerticalOptions="Center" />
+                                        </Border>
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroupList>
+                                                <VisualStateGroup>
+                                                    <VisualState x:Name="Greater300">
+                                                        <VisualState.StateTriggers>
+                                                            <AdaptiveTrigger MinWindowWidth="300" />
+                                                        </VisualState.StateTriggers>
+                                                        <VisualState.Setters>
+                                                            <Setter Property="ColumnDefinitions" Value="80,80,80,80,80,80,*" />
+                                                        </VisualState.Setters>
+                                                    </VisualState>
+                                                    <VisualState x:Name="Greater800">
+                                                        <VisualState.StateTriggers>
+                                                            <AdaptiveTrigger MinWindowWidth="900" />
+                                                        </VisualState.StateTriggers>
+                                                        <VisualState.Setters>
+                                                            <Setter Property="ColumnDefinitions" Value="120,120,120,120,120,120,*" />
+                                                        </VisualState.Setters>
+                                                    </VisualState>
+                                                </VisualStateGroup>
+                                            </VisualStateGroupList>
+                                        </VisualStateManager.VisualStateGroups>
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </VerticalStackLayout>
+                </ScrollView>
+            </Border>
+        </Grid>
+    </ScrollView>
+</ContentPage>
