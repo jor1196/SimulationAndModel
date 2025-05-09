@@ -54,6 +54,7 @@ public partial class ThreeExerciseViewModel : ObservableObject
 
         ThreeExerciseRecords = [];
         CustomerLeaveQueueTimes = [];
+        LasterRecord = null;
 
         FromCustomerArrivalTime ??= _random.Next(0, 60);
         FromEndServiceTime ??= _random.Next(0, 60);

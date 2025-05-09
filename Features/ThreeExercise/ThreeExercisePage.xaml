@@ -219,7 +219,7 @@
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="5,5,5,5" />
                 </Border.StrokeShape>
-                <ScrollView Orientation="Horizontal">
+                <ScrollView>
                     <Grid
                         Margin="0,25,0,0"
                         ColumnSpacing="-1"
@@ -230,7 +230,7 @@
                             Grid.ColumnSpan="9"
                             FontAttributes="Italic"
                             FontSize="Header"
-                            HorizontalOptions="Center"
+                            HorizontalOptions="Start"
                             Text="Vector Final" />
                         <Border
                             Grid.Row="1"
@@ -298,31 +298,29 @@
                                 Text="{Binding LasterRecord.CustomerServedCount, Mode=OneWay}"
                                 VerticalOptions="Center" />
                         </Border>
-                        <Border
+                        <FlexLayout
                             Grid.Row="1"
                             Grid.Column="6"
-                            Padding="10"
-                            Stroke="Black"
-                            VerticalOptions="Fill">
-                            <FlexLayout
-                                BindableLayout.ItemsSource="{Binding CustomerLeaveQueueTimes}"
-                                Direction="Row"
-                                Wrap="Wrap">
-                                <BindableLayout.ItemTemplate>
-                                    <DataTemplate x:DataType="x:TimeSpan">
+                            BindableLayout.ItemsSource="{Binding CustomerLeaveQueueTimes}"
+                            Direction="Row">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="x:TimeSpan">
+                                    <Border
+                                        Padding="10"
+                                        Stroke="Black"
+                                        VerticalOptions="Fill">
                                         <Label HorizontalOptions="Center" VerticalOptions="Center">
                                             <Label.FormattedText>
                                                 <FormattedString>
-                                                    <Span Text="Cliente Hora" />
+                                                    <Span Text="Cliente Hora: " />
                                                     <Span Text="{Binding .}" />
-                                                    <Span Text="   " />
                                                 </FormattedString>
                                             </Label.FormattedText>
                                         </Label>
-                                    </DataTemplate>
-                                </BindableLayout.ItemTemplate>
-                            </FlexLayout>
-                        </Border>
+                                    </Border>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </FlexLayout>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroupList>
                                 <VisualStateGroup>
@@ -519,17 +517,18 @@
                                                 Text="{Binding CustomerServedCount, Mode=OneWay}"
                                                 VerticalOptions="Center" />
                                         </Border>
-                                        <Border
+                                        <FlexLayout
                                             Grid.Column="6"
-                                            Padding="10"
-                                            Stroke="Black"
+                                            BindableLayout.ItemsSource="{Binding CustomerLeaveQueueTimes}"
+                                            Direction="Row"
+                                            HorizontalOptions="Fill"
                                             VerticalOptions="Fill">
-                                            <FlexLayout
-                                                BindableLayout.ItemsSource="{Binding CustomerLeaveQueueTimes}"
-                                                Direction="Row"
-                                                Wrap="Wrap">
-                                                <BindableLayout.ItemTemplate>
-                                                    <DataTemplate x:DataType="x:TimeSpan">
+                                            <BindableLayout.ItemTemplate>
+                                                <DataTemplate x:DataType="x:TimeSpan">
+                                                    <Border
+                                                        Padding="10"
+                                                        Stroke="Black"
+                                                        VerticalOptions="Fill">
                                                         <Label HorizontalOptions="Center" VerticalOptions="Center">
                                                             <Label.FormattedText>
                                                                 <FormattedString>
@@ -539,10 +538,10 @@
                                                                 </FormattedString>
                                                             </Label.FormattedText>
                                                         </Label>
-                                                    </DataTemplate>
-                                                </BindableLayout.ItemTemplate>
-                                            </FlexLayout>
-                                        </Border>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </BindableLayout.ItemTemplate>
+                                        </FlexLayout>
                                         <VisualStateManager.VisualStateGroups>
                                             <VisualStateGroupList>
                                                 <VisualStateGroup>
