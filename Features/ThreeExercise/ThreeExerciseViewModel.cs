@@ -41,8 +41,8 @@ public partial class ThreeExerciseViewModel : ObservableObject
     [ObservableProperty]
     private int? _customerWaitTime;
 
-    [ObservableProperty]
-    private int? _customerQueueCount = null;
+    //[ObservableProperty]
+    //private int? _customerQueueCount = null;
 
     [ObservableProperty]
     private bool _serviceStationState;
@@ -59,7 +59,7 @@ public partial class ThreeExerciseViewModel : ObservableObject
         FromCustomerArrivalTime ??= _random.Next(0, 60);
         FromEndServiceTime ??= _random.Next(0, 60);
         FromEndServiceTime ??= _random.Next(0, 60);
-        CustomerQueueCount ??= _random.Next(0, 20);
+        //CustomerQueueCount ??= _random.Next(0, 20);
         CustomerWaitTime ??= _random.Next(0, 60);
 
         if (InitialTime == default && EndTime == default)
@@ -79,7 +79,6 @@ public partial class ThreeExerciseViewModel : ObservableObject
             CustomerNextArrivalTime = customerNextArrivalTime,
             NextEndServiceTime = nextEndServiceTime,
             CustomerServedCount = 0,
-            CustomerQueueCount = CustomerQueueCount.Value,
             ServiceStationState = ServiceStationState
         };
 
@@ -102,13 +101,12 @@ public partial class ThreeExerciseViewModel : ObservableObject
                 {
                     if (record.CustomerQueueCount > 0) {
                         record.CustomerQueueCount--;
+                        record.ServiceStationState = true;
+
                     }
-
-
+                    
                     if (_isListNotNullOrEmptyConverter.ConvertFrom(record.CustomerQueueTime))
                         record.CustomerQueueTime.RemoveAt(0);
-
-                    record.ServiceStationState = true;
                 }
                 else
                 {
@@ -159,7 +157,7 @@ public partial class ThreeExerciseViewModel : ObservableObject
         EndTime = default;
         FromCustomerArrivalTime = null;
         FromEndServiceTime = null;
-        CustomerQueueCount = null;
+        //CustomerQueueCount = null;
         ServiceStationState = false;
     }
 

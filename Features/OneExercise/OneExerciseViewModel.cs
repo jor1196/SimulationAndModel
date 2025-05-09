@@ -110,9 +110,10 @@ public partial class OneExerciseViewModel : ObservableObject
                 if (!record.ServiceStationState)
                 {
                     if (record.CustomerQueueCount > 0)
+                    {
                         record.CustomerQueueCount--;
-
-                    record.ServiceStationState = true;
+                        record.ServiceStationState = true;
+                    }
                 }
                 else
                     record.CustomerQueueCount++;

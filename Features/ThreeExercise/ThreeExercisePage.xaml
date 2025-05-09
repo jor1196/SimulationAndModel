@@ -92,7 +92,7 @@
                                 Minimum="1"
                                 Value="{Binding FromEndServiceTime}" />
                         </inputLayout:SfTextInputLayout>
-                        <inputLayout:SfTextInputLayout
+                        <!--<inputLayout:SfTextInputLayout
                             Margin="5"
                             HeightRequest="100"
                             Hint="Cantidad de clientes en cola"
@@ -102,7 +102,7 @@
                                 CustomFormat="0"
                                 Minimum="0"
                                 Value="{Binding CustomerQueueCount, TargetNullValue={x:Null}, FallbackValue={x:Null}}" />
-                        </inputLayout:SfTextInputLayout>
+                        </inputLayout:SfTextInputLayout>-->
                         <HorizontalStackLayout
                             Margin="5,0"
                             HeightRequest="100"

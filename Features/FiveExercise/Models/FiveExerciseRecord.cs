@@ -13,6 +13,6 @@ public record FiveExerciseRecord
     public required TimeSpan NextEndServiceTime { get; set; }
     public int CustomerQueueCount { get; set; }
     public bool ServiceStationState { get; set; }
-    public bool SecureZone { get; set; }
+    public bool SecureZoneState { get; set; }
     public int CustomerServedCount { get; set; }
 }

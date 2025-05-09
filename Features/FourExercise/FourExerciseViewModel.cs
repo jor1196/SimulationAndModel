@@ -106,7 +106,7 @@ public partial class FourExerciseViewModel : ObservableObject
                 else
                     record.ImportantCustomerQueueCount++;
 
-                record.ImportantCustomerNextArrivalTime = record.ImportantCustomerNextArrivalTime.SumSeconds(FromImportantCustomerArrivalTime.Value);
+                record.ImportantCustomerNextArrivalTime = record.CurrentTime.SumSeconds(FromImportantCustomerArrivalTime.Value);
             }
             else if (record.CustomerNextArrivalTime < record.NextEndServiceTime)
             {
@@ -150,7 +150,7 @@ public partial class FourExerciseViewModel : ObservableObject
                 else
                     record.ServiceStationState = false;
 
-                record.NextEndServiceTime = record.NextEndServiceTime.SumSeconds(FromImportantCustomerArrivalTime.Value);
+                record.NextEndServiceTime = record.CurrentTime.SumSeconds(FromEndServiceTime.Value);
             }
 
             FourExerciseRecords.Add(record);
