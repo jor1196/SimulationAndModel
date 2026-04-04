@@ -1,0 +1,51 @@
+{
+  "name": "dotnet-maui-9",
+  "image": "mcr.microsoft.com/devcontainers/dotnet:9.0",
+  // Necesario para Podman: mantiene el mapeo de UID/GID del host
+  // evita problemas de permisos en los mounts
+  "runArgs": [
+    "--userns=keep-id"
+  ],
+  "containerEnv": {
+    "ANDROID_SDK_ROOT": "/home/vscode/.android/sdk",
+    "ANDROID_HOME": "/home/vscode/.android/sdk"
+  },
+  // remoteEnv inyecta las variables directamente en el entorno de VS Code y sus extensiones
+  "remoteEnv": {
+    "JAVA_HOME": "/usr/lib/jvm/msopenjdk-17-amd64",
+    "PATH": "${containerEnv:PATH}:/home/vscode/.android/sdk/cmdline-tools/latest/bin:/home/vscode/.android/sdk/platform-tools:/home/vscode/.android/sdk/emulator:/usr/lib/jvm/msopenjdk-17-amd64/bin"
+  },
+  "mounts": [
+    // Reutiliza el Android SDK del host para no descargarlo cada vez.
+    // Asegúrate de que ~/.android/sdk exista en tu host antes de levantar el contenedor.
+    "source=${localEnv:HOME}/.android/sdk,target=/home/vscode/.android/sdk,type=bind,consistency=cached"
+  ],
+  "postCreateCommand": "bash .devcontainer/setup.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-dotnettools.csdevkit",
+        "ms-dotnettools.csharp",
+        "ms-dotnettools.dotnet-maui",
+        "ms-dotnettools.vscode-dotnet-runtime"
+      ],
+      "settings": {
+        "dotnet.defaultSolution": "*.sln",
+        "editor.formatOnSave": true,
+        "editor.tabSize": 4,
+        "files.trimTrailingWhitespace": true
+      }
+    }
+  },
+  "remoteUser": "vscode",
+  // Para WiFi debugging: expone el puerto ADB
+  "forwardPorts": [
+    5555
+  ],
+  "portsAttributes": {
+    "5555": {
+      "label": "ADB WiFi",
+      "onAutoForward": "silent"
+    }
+  }
+}
