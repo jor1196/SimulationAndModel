@@ -1,10 +1,10 @@
 #!/bin/bash
 set -e
 
-echo "🚀 Configurando entorno .NET MAUI 9..."
+echo "🚀 Configurando entorno .NET MAUI 10..."
 
-# ── 0. Microsoft OpenJDK 17 ───────────────────────────────────────────────────
-echo "☕ Instalando Microsoft OpenJDK 17..."
+# ── 0. Microsoft OpenJDK 21 ───────────────────────────────────────────────────
+echo "☕ Instalando Microsoft OpenJDK 21..."
 
 wget -qO /tmp/packages-microsoft-prod.deb \
   "https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb"
@@ -12,14 +12,14 @@ sudo dpkg -i /tmp/packages-microsoft-prod.deb
 rm /tmp/packages-microsoft-prod.deb
 
 sudo apt-get update -q
-sudo apt-get install -y msopenjdk-17
+sudo apt-get install -y msopenjdk-21
 
 # Exportamos para el uso de este script
-export JAVA_HOME=/usr/lib/jvm/msopenjdk-17-amd64
+export JAVA_HOME=/usr/lib/jvm/msopenjdk-21-amd64
 export PATH=$JAVA_HOME/bin:$PATH
 
 # Lo dejamos en bashrc por si se abre una terminal pura (fuera de VS Code)
-echo "export JAVA_HOME=/usr/lib/jvm/msopenjdk-17-amd64" >> ~/.bashrc
+echo "export JAVA_HOME=/usr/lib/jvm/msopenjdk-21-amd64" >> ~/.bashrc
 echo 'export PATH=$JAVA_HOME/bin:$PATH' >> ~/.bashrc
 
 echo "✅ Java instalado: $(java -version 2>&1 | head -1)"
@@ -29,7 +29,6 @@ echo "📦 Instalando workloads de .NET MAUI..."
 dotnet workload install maui-android
 
 # ── 2. Android SDK ────────────────────────────────────────────────────────────
-# Las variables ANDROID_SDK_ROOT y ANDROID_HOME ya vienen de containerEnv
 if [ ! -d "$ANDROID_SDK_ROOT/cmdline-tools" ]; then
   echo "📱 Descargando Android Command Line Tools..."
   mkdir -p "$ANDROID_SDK_ROOT/cmdline-tools"
@@ -51,24 +50,22 @@ fi
 sudo apt-get update
 sudo apt-get install -y ca-certificates ca-certificates-java
 sudo update-ca-certificates
+
 # ── 3. Aceptar licencias y componentes Android ────────────────────────────────
-# Actualizamos el PATH SOLO para la ejecución de este script
 export PATH="$PATH:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/emulator"
 
-echo "🔧 Aplicando fix para sdkmanager y corrigiendo permisos de la carpeta padre..."
-# El motor de contenedores crea ~/.android como root por el bind mount.
-# Reclamamos la carpeta para el usuario actual (vscode) sin tocar el SDK.
+echo "🔧 Aplicando fix para sdkmanager y corrigiendo permisos..."
 sudo chown $(whoami):$(whoami) ~/.android
 touch ~/.android/repositories.cfg
 
 echo "📝 Aceptando licencias de Android SDK..."
 yes | sdkmanager --sdk_root="$ANDROID_SDK_ROOT" --licenses > /dev/null 2>&1 || true
 
-echo "📦 Instalando componentes Android necesarios para MAUI 9..."
+echo "📦 Instalando componentes Android necesarios para MAUI 10 (API 36)..."
 sdkmanager --sdk_root="$ANDROID_SDK_ROOT" \
   "platform-tools" \
-  "platforms;android-35" \
-  "build-tools;35.0.0"
+  "platforms;android-36" \
+  "build-tools;36.0.0"
 
 # ── 4. ADB ────────────────────────────────────────────────────────────────────
 echo "🔌 Verificando ADB..."
@@ -93,4 +90,4 @@ echo ""
 echo "🏗️  Para crear un proyecto MAUI nuevo:"
 echo "   dotnet new maui -n MiApp"
 echo "   cd MiApp"
-echo "   dotnet build -t:Run -f net9.0-android"
+echo "   dotnet build -t:Run -f net10.0-android"
